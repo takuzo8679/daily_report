@@ -1,0 +1,32 @@
+# rubyメモ
+
+- 標準I/O
+    - 出力：puts
+    - 入力
+        - gets.chomp
+        - gets.chomp.to_iで整数変換
+- 変数展開
+    - `puts "my name is#{name}"`
+    - 注意`"`を使うこと`'`の場合はひそのまま表示される
+- 文字列とシンボル
+    - 文字列：何らかのデータ(変数や定数を表す)記法→ "ruby"
+    - シンボル：コードの一部となる。記法→ruby
+    - ハッシュでは同じように使用できるがシンボル記法が標準
+- メソッド
+    - 戻り値がbooleanの場合は?をつける慣例
+        - `date.isSunday?`ではなく`date.sunday?`
+    - キーワード引数を指定できる
+- クラス
+    - インスタンス変数の定義例`attr_accessor :amount`
+    - initializeメソッドで初期化
+    - 継承記載例`class Food < Menu`
+    - オーバーライド：そのまま`def hoge`
+- クラスメソッド
+    - 定義例。`def Menu.discountDay?`
+    - インスタンスを生成せずに呼べる
+    - 対：インスタンスメソッド
+- ファイル構造
+    - プログラム実行部分：index.rb、その他のクラス：menu.rb
+    - ファイルの読み込み`require "./menu"`
+- ライブラリ
+    - date
