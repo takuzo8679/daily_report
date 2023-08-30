@@ -60,4 +60,13 @@
     - LEFT JOIN
         - キーがNULLの場合でも結合元のレコードが表示される
     - 複数回実行可能
-
+- レコード追加
+    - `INSERT INTO students (name, course) VALUES("Kate", "Java");`
+    - VALUESはVALUEの単数ではなくVALUESの複数形
+- レコード更新
+    - `UPDATE students SET name='Jordan', course='HTML' WHERE id = 6;`
+    - 注意:WHERE句がないとすべてを更新してしまう
+- レコード削除
+    - `DELETE FROM students WHERE id = 6;`
+    - 注意：WHERE句がないとすべてを削除してしまう
+    - FROMのつけ忘れ注意
