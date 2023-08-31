@@ -31,6 +31,9 @@
         - `post.content` // 中身が取り出せる
     - `posts = Post.all` // すべてのデータを取得(インスタンス配列となる)
         - `posts[0].content` // 中身が取り出せる
+        - 並べ替え
+            - `@posts = Post.all.order(created_at: :desc)`
+            - byが付かないorder, 小文字シンボルのdesc
     - `post = Post.find_by(id:1)` // id検索
     - 
 ## view/controller/routing
@@ -40,13 +43,17 @@
     - htmlのようなもの
     - リンク
         - `<a href="/">TweetApp</a>`
-        - `<%+ link_to("表示文字", "/your/path")%>` =を忘れずに
-    - 変数
-        - 定義は`<%%>`でくくる
-        - `<% post1 = "This is Variable" %">`
-            - %%で括られた箇所がRubyのコード
-        - 使用は`<%=%>`とイコールをつける
-        - `<%= post1 %>` // This is Variableを表示
+        - `<%= link_to("表示文字", "/your/path")%>` =を忘れずに
+        - `<%= link_to("表示文字", "/your/#{post.id}")%>` 
+    - 組込みruby
+        - `<%%>`でくくる
+            - 例：`<% post1 = "This is Variable" %">`
+                - %%で括られた箇所がRubyのコード
+        - 表示
+            - `<%=%>`とイコールをつける
+            - `<%= post1 %>` // This is Variableを表示
+            - `<%= @posts.each do |post| %>` // 間違い。処理を実行しつつ@postの中身も表示されてしまう
+
     - サイト全体に表示される共通のレイアウトのHTML
         - `views/layouts/application.html.erb`
         - `<body>`タグの`<%= yield %>`に配下のerbが代入される仕組み
