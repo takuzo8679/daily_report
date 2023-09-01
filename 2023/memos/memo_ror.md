@@ -71,7 +71,8 @@
                 -  name属性の値をキーとしたハッシュがRails側に送られる
             -  `<input type="submit" value="投稿"` inputボタンで送る
         - `<%end%>`　で締める
-    - ``
+    - POSTメソッドでリンクする
+        - `<%= link_to("削除", "/posts/#{@post.id}/destroy", {method: post})%>`
 - controller
     - 実体は`app/controllers/home_controller.rb`
     - controllerを経由してviewをブラウザに返している
@@ -85,7 +86,8 @@
                 -  `views/home/top.html.erb`
             -  ブラウザに返す
         -  viewで使用する変数はアクション内に定義する
-            -  @posts=[...]のように@をつけることでviewで使用可能になる
+            -  @posts=[...]のように@をつけることでviewなどで使用可能になる
+                -  インスタンス変数にしてやる
             -  viewでも@をつけて使用する
         -  URL内のパラメータの取得方法
             -  `posts/:id`とした場合、`@id=params[:id]`で取得できる  // paramsに@はいらない
