@@ -23,6 +23,7 @@
 - ``:
 ### rails console
 - `rails console`で起動、`quit`で終了
+## DB操作
 - データ作成
     - `post = Post.new(content: "Hello world")` // インスタンス作成
     - `post.save` // Postテーブルに保存
@@ -35,7 +36,12 @@
             - `@posts = Post.all.order(created_at: :desc)`
             - byが付かないorder, 小文字シンボルのdesc
     - `post = Post.find_by(id:1)` // id検索
-    - 
+- データ編集
+    - `post = Post.find_by(id: :id)`
+    - `post.content = "new message"`
+    - `post.save`
+- データ削除
+    - `post.destroy `
 ## view/controller/routing
 - view
     - 実体は`app/views/home/top.html.erb`
@@ -43,7 +49,9 @@
     - htmlのようなもの
     - リンク
         - `<a href="/">TweetApp</a>`
-        - `<%= link_to("表示文字", "/your/path")%>` =を忘れずに
+        - `<%= link_to("表示文字", "/your/path")%>`
+            - =を忘れずに
+            - パスの頭の/を忘れずに
         - `<%= link_to("表示文字", "/your/#{post.id}")%>` 
     - 組込みruby
         - `<%%>`でくくる
@@ -53,17 +61,16 @@
             - `<%=%>`とイコールをつける
             - `<%= post1 %>` // This is Variableを表示
             - `<%= @posts.each do |post| %>` // 間違い。処理を実行しつつ@postの中身も表示されてしまう
-
     - サイト全体に表示される共通のレイアウトのHTML
         - `views/layouts/application.html.erb`
         - `<body>`タグの`<%= yield %>`に配下のerbが代入される仕組み
-    - フォームを送信
-        - `<%= form_tag("/posts/create") do %>`
-        - `<%end%>`
-    -  データ送信
-        -  `<textarea name="content"></textarea>`
-        -  textareaタグにname属性を指定すると入力データを送信することができる
-        -  name属性の値をキーとしたハッシュがRails側に送られる
+    - フォームからデータを送信
+        - `<%= form_tag("/posts/create") do %>`　でくくる。doを忘れずに
+            -  `<textarea name="content"></textarea>`
+                -  textareaタグにname属性を指定する
+                -  name属性の値をキーとしたハッシュがRails側に送られる
+            -  `<input type="submit" value="投稿"` inputボタンで送る
+        - `<%end%>`　で締める
     - ``
 - controller
     - 実体は`app/controllers/home_controller.rb`
