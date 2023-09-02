@@ -10,16 +10,28 @@
     - 
 ### Database
 - マイグレーションファイル作成
-    - `rails g model Post content:text`を実行
-        - g:generateの短縮
-        - Post' postsテーブルを作成する際は先頭おおもじの単数系にする
-        - content:column
-        - text:データ型
-    - 作成場所
-        - migration:`/db/migrate/20230831235959_create_posts.rb`
-        - model:`app/models/post.rb`
-    - 実行:`rails db:migrate`
-        - DB未反映のマイグレーションファイルがあるとRailsがエラーになるので注意
+    - モデルも作成
+        - `rails g model Post content:text`を実行
+            - 他の例：`rails g model User name:string email:string`
+            - g:generateの短縮
+            - Post' postsテーブルを作成する際は先頭おおもじの単数系にする
+            - content:column
+            - text:データ型で長い文字列。sting:短い文字列
+        - 作成場所
+            - migration:`/db/migrate/20230831235959_create_posts.rb`
+            - model:`app/models/post.rb`
+    - マイグレーションファイル作成のみ
+        - `rails g migration your_file_name`
+    - column追加
+        - `add_column :テーブル名, ;カラム名, :データ型`
+        ```ruby
+        def change
+            add_column :users, :image_name, :string
+        end
+        ```
+
+- 実行:`rails db:migrate`
+    - DB未反映のマイグレーションファイルがあるとRailsがエラーになるので注意
 - ``:
 ### rails console
 - `rails console`で起動、`quit`で終了
@@ -65,14 +77,23 @@
         - `views/layouts/application.html.erb`
         - `<body>`タグの`<%= yield %>`に配下のerbが代入される仕組み
     - フォームからデータを送信
-        - `<%= form_tag("/posts/create") do %>`　でくくる。doを忘れずに
+        - `<%= form_tag("/posts/create") do %>`　でくくる。
+            - do,=を忘れずに
             -  `<textarea name="content"></textarea>`
                 -  textareaタグにname属性を指定する
                 -  name属性の値をキーとしたハッシュがRails側に送られる
             -  `<input type="submit" value="投稿"` inputボタンで送る
+            -  画像を送るとき
+                -  `<%=form_tag("...", {multipart: true}) do %>`
+                -  `<input name="image" type="file">`
         - `<%end%>`　で締める
     - POSTメソッドでリンクする
-        - `<%= link_to("削除", "/posts/#{@post.id}/destroy", {method: post})%>`
+        - `<%= link_to("削除", "/posts/#{@post.id}/destroy", {method: "post"})%>`
+    - 画像
+        - `<img src="<%="/user_images/#{@user.image_name}"%>`
+            - `=`がつく
+            - `/`で始まる
+            - `"`が二箇所はいる
 - controller
     - 実体は`app/controllers/home_controller.rb`
     - controllerを経由してviewをブラウザに返している
@@ -94,8 +115,28 @@
             -  .html.erbでは　`<%=@id%>`とする
                 -  `<%="idは「#{@id}」です"%>`
     -  controllerは目的に合わせて作成する
-    -  リダイレクト:`redirect_to("/posts/index")`
-    -  
+    -  リダイレクト
+        -  別のrouteに飛ばす
+        -  `redirect_to("パス")`
+        -  `redirect_to("/posts/index")`
+        -  /をつける。ファイルではなくパスなので。
+    -  ビュー表示
+        -  別のアクションを介さずにxx.html.erbを表示する
+        -  `render("ビューファイル")`
+        -  `render("posts/edit")`
+            - /はつけない。routeではなくファイルなので
+    - フラッシュ
+        - 投稿成功時など1度だけ表示させたいメッセージ
+        - __.controllerにてflash変数に代入`flash[:notice] = "hoge"`
+        - __.html.erbにてflash変数がある場合に表示
+        - 
+            ```erb
+            <%if flash[:notice]%>
+                <div class="flash>
+                    <%=flash[:notice]%>
+                </div>
+            <%end%>
+            ```
 - routing
     - `app/config/routes.rb`
     - URLからどのコントローラの、どのアクションで処理するかを決める対応表
@@ -114,8 +155,27 @@
             - stylesheets
                 - home.scss: generateコマンドで生成される
                 - 全てのviewに提供される
-
-- ``:
+## app/model
+- バリデーション
+    - 書き方
+        ```ruby
+        class Post < ApplicationRecode
+            #  　　検証するカラム名, 検証内容(値の存在確認)
+            validates :content, {presence: true}
+            # 複数入力する場合は,で区切る {___: ___, ___:___  }
+        end
+        ```
+    - :の位置に注意する
+    - 文字数制限: `validates : content, {length: {maximum: 140}}`
+    - 重複禁止：`{uniqueness: true}`
+## ライブラリ
+### ファイル操作
+- 書き込み
+    - テキストファイル
+        - `File.write("public/sample.txt", "your contents")`:
+        - publicフォルダに格納する例
+    - 画像ファイルはバイナリで書き込む
+        - `File.binwrite("public/image_name", image.read)` # image.redeはファイルの中身
 - ``:
 ## 
 - ``:
