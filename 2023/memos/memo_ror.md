@@ -47,7 +47,9 @@
         - 並べ替え
             - `@posts = Post.all.order(created_at: :desc)`
             - byが付かないorder, 小文字シンボルのdesc
-    - `post = Post.find_by(id:1, password:"xxx")` // id & pass検索
+    - 検索
+        - 1件：`post = Post.find_by(id:1, password:"xxx")` // id & pass検索
+        - 複数：where
 - データ編集
     - `post = Post.find_by(id: :id)`
     - `post.content = "new message"`
@@ -211,6 +213,9 @@
     - `before_action :authenticate_user, {only: [:edit, :update]}` // onlyで適用範囲を指定する
     - application_viewで表示項目を切り替える
     - viewで一致ユーザーのみ編集リンクを表示する
+- いいね機能
+    - Likeテーブルを作成する
+        - user_id, post_id
 - ``:
 ## 
 - ``:
