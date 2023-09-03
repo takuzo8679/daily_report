@@ -47,7 +47,7 @@
         - 並べ替え
             - `@posts = Post.all.order(created_at: :desc)`
             - byが付かないorder, 小文字シンボルのdesc
-    - `post = Post.find_by(id:1)` // id検索
+    - `post = Post.find_by(id:1, password:"xxx")` // id & pass検索
 - データ編集
     - `post = Post.find_by(id: :id)`
     - `post.content = "new message"`
@@ -76,6 +76,7 @@
     - サイト全体に表示される共通のレイアウトのHTML
         - `views/layouts/application.html.erb`
         - `<body>`タグの`<%= yield %>`に配下のerbが代入される仕組み
+        - controllerで定義した変数・共通変数を受け取れる
     - フォームからデータを送信
         - `<%= form_tag("/posts/create") do %>`　でくくる。
             - do,=を忘れずに
@@ -84,12 +85,12 @@
                 -  name属性の値をキーとしたハッシュがRails側に送られる
             -  `<input type="submit" value="投稿"` inputボタンで送る
             -  画像を送るとき
-                -  `<%=form_tag("...", {multipart: true}) do %>`
+                -  `<%=form_tag("/login", {multipart: true}) do %>`
                 -  `<input name="image" type="file">`
         - `<%end%>`　で締める
     - POSTメソッドでリンクする
         - `<%= link_to("削除", "/posts/#{@post.id}/destroy", {method: "post"})%>`
-    - 画像
+    - 画像表示
         - `<img src="<%="/user_images/#{@user.image_name}"%>`
             - `=`がつく
             - `/`で始まる
@@ -114,7 +115,22 @@
             -  `posts/:id`とした場合、`@id=params[:id]`で取得できる  // paramsに@はいらない
             -  .html.erbでは　`<%=@id%>`とする
                 -  `<%="idは「#{@id}」です"%>`
+        -  formから送られるデータの取得
+            -  view側でタグ：`name="xxx"`としておき
+            -  controller側は`a = params[:xxx]`で受け取る
     -  controllerは目的に合わせて作成する
+    -  共通処理
+        - controllerファイル内で共通の処理
+            - `before_action :set_current_user`のようアクションで記載する
+        - 全てのcontrollerで共通する処理は`application_controller.rb`に記載する
+            ```ruby
+            class ApplicationController < ActionController::Base
+                before_action :set_current_user
+                def set_current_user
+                    @current_user = User.find_by(id: session[:user_id])
+                end
+            end
+            ```
     -  リダイレクト
         -  別のrouteに飛ばす
         -  `redirect_to("パス")`
@@ -169,13 +185,32 @@
     - 文字数制限: `validates : content, {length: {maximum: 140}}`
     - 重複禁止：`{uniqueness: true}`
 ## ライブラリ
-### ファイル操作
-- 書き込み
-    - テキストファイル
-        - `File.write("public/sample.txt", "your contents")`:
-        - publicフォルダに格納する例
-    - 画像ファイルはバイナリで書き込む
-        - `File.binwrite("public/image_name", image.read)` # image.redeはファイルの中身
+- ファイル操作
+    - 書き込み
+        - テキストファイル
+            - `File.write("public/sample.txt", "your contents")`:
+            - publicフォルダに格納する例
+        - 画像ファイルはバイナリで書き込む
+            - `File.binwrite("public/image_name", image.read)` # image.readはファイルの中身
+- ログイン機能
+    - viewのinputのタグで`type="password"`と指定する
+    - ログイン画面を追加
+    - マイグレーション
+    - フォームの値の送信
+    - email/passをfind_by検索
+    - ログイン処理
+        - セッション
+            - `session[:yourKey] = value` とするとブラウザに保存される
+    - ログアウト
+        - セッションを削除:`session[:yourKey] = nil`
+    - サインアップ時の処理
+- アクセス制限
+    - 各controller.rbで制限をかける
+        - application_controller.rbで定義しておく
+        - `if @current_user == nil なら redirect("/login")`
+    - `before_action :authenticate_user, {only: [:edit, :update]}` // onlyで適用範囲を指定する
+    - application_viewで表示項目を切り替える
+    - viewで一致ユーザーのみ編集リンクを表示する
 - ``:
 ## 
 - ``:
