@@ -7,7 +7,7 @@
 - `rails generate controller home top`:/home/topにトップページ作成
     - homeというコントローラーが作成されるので一度しか使えない
     - ページを追加する際は　controller.rbとroutes.rbにアクションを追加する
-    - 
+    - viewが不要な場合は手動作成可能
 ### Database
 - マイグレーションファイル作成
     - モデルも作成
@@ -29,10 +29,12 @@
             add_column :users, :image_name, :string
         end
         ```
-
 - 実行:`rails db:migrate`
     - DB未反映のマイグレーションファイルがあるとRailsがエラーになるので注意
-- ``:
+### Gemfile
+- インストール手順
+    - Gemfileに追記：`gem bcrypt`
+    - ターミナル：`bundle install`
 ### rails console
 - `rails console`で起動、`quit`で終了
 ## DB操作
@@ -56,6 +58,8 @@
     - `post.save`
 - データ削除
     - `post.destroy `
+- データカウント
+    - `Like.where(id:1).count`
 ## view/controller/routing
 - view
     - 実体は`app/views/home/top.html.erb`
@@ -75,6 +79,7 @@
             - `<%=%>`とイコールをつける
             - `<%= post1 %>` // This is Variableを表示
             - `<%= @posts.each do |post| %>` // 間違い。処理を実行しつつ@postの中身も表示されてしまう
+            - `<%%>`内にタグは書けない。`do`と　`<%end%>`で複数行にする
     - サイト全体に表示される共通のレイアウトのHTML
         - `views/layouts/application.html.erb`
         - `<body>`タグの`<%= yield %>`に配下のerbが代入される仕組み
@@ -216,6 +221,18 @@
 - いいね機能
     - Likeテーブルを作成する
         - user_id, post_id
+    - いいねアイコンはFont Awesomeから取得
+- パスワードハッシュ化
+    - `bcrypt`をインストール
+    - `password_digest`カラムを追加し、`password`カラムは削除
+    - `has_secure_password`を実行＝ファイルの上部に記載
+        - `authenticate`などのメソッドが使えるようになる
+    - `models/users.rb`のpasswordのvalidationを削除
+    - 保存
+        - →今まで通りpasswordを操作するだけでハッシュ化してpassword_digestに代入してくれる
+    - 検証
+        - emailなどで@userを取得後に
+        - `if @user && @user.authenticate(params[:password])`
 - ``:
 ## 
 - ``:
