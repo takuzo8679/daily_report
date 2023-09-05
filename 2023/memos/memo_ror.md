@@ -11,7 +11,7 @@
 ### Database
 - マイグレーションファイル作成
     - モデルも作成
-        - `rails g model Post content:text`を実行
+        - `rails g model Post content:text user_id:integer`を実行
             - 他の例：`rails g model User name:string email:string`
             - g:generateの短縮
             - Post' postsテーブルを作成する際は先頭おおもじの単数系にする
@@ -128,7 +128,8 @@
     -  controllerは目的に合わせて作成する
     -  共通処理
         - controllerファイル内で共通の処理
-            - `before_action :set_current_user`のようアクションで記載する
+            - `before_action :set_current_user, {only: [:edit, :update]`のようアクションで記載する
+            - onlyで対象のアクションを選べる
         - 全てのcontrollerで共通する処理は`application_controller.rb`に記載する
             ```ruby
             class ApplicationController < ActionController::Base
@@ -225,7 +226,7 @@
 - パスワードハッシュ化
     - `bcrypt`をインストール
     - `password_digest`カラムを追加し、`password`カラムは削除
-    - `has_secure_password`を実行＝ファイルの上部に記載
+    - `has_secure_password`をモデルファイルの上部に記載
         - `authenticate`などのメソッドが使えるようになる
     - `models/users.rb`のpasswordのvalidationを削除
     - 保存
