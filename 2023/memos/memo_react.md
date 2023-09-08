@@ -28,6 +28,46 @@
             - NG:`{this.state = {key: value}}`
             - NG:`{this.state.key = value}`
 
+## コンポーネント
+- class名がコンポーネント名になる
+- React.Componentを継承することでコンポーネントになる
+- ファイル記載内容
+    ```js
+    // /react-app-name/src/components/.../MyComponents.js
+    import React from 'react';
+    import ChildComponentIfNeeds from './ChildComponent'
+    class MyComponent extends React.Component {
+        render() {
+            // ここでJSXを作成して変数に代入可能。その場合は()でくくること。
+            const some = !this.state.isSome? null : {/* JSX */}
+
+            return(
+                {/* Write your JSX */}
+
+                {/* 子コンポーネント呼び出し */}
+                <ChildComponentIfNeeds 
+                    propsName1='value1' {/* props渡す */}
+                    propsName2='value2'
+                />
+
+                {/* map呼び出し */}
+                {itemList.map((item) => {
+                    return(             {/* returnつける */}
+                    <SomeComponent
+                        name={item.name} {/* {}でくくる */}
+                        image={item.image}
+                    /> {/* 閉じ忘れ注意 */}
+                    )
+                    })
+                }
+
+
+            );
+        }
+    }
+    export default MyComponent;
+    ```
+
 ## JSX
 - JSXが記載されるのはrenderのreturn内のみ
 - JSで宣言した変数をJSX内で`{}`でくくると使用できる
@@ -49,10 +89,15 @@
         </div>
     )
     ```
+- 閉じタグの違い
+    - |HTML|JSX|
+        |--|--|
+        |`<img>`|`<img />`|
+        |`<input>`|`<input />`|
+        |`<textarea></textarea>`|`<textarea />`|
+        |`<form></form>`|`同左`|
+
 - imgタグ
     - 変数を使用する場合は`"`は省略できる：`src={imgUrl}`
-    - 閉じタグ
-        - htmlでは不要 `>`
-        - JSXでは必要 `/>`
 - css
     - ~~class~~ではなく`className`と書く
