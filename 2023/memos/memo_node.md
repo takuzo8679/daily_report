@@ -66,7 +66,19 @@
         -   `res.locals.username = 'xxx'`
     -   xxx.ejs
         -   `<%= locals.username %>` // 注意 res がつかない
-
+- 一つのルートの中に複数のミドルウェアを記載できる
+    - ミドルウェアは上から順次実行される
+    - next()で次のミドルウウェアへ
+        ```js
+        app.post('/login',
+            (req, res) => { /**/ next(); },
+            (req, res, next) => { /**/ next(); }, // nextの引数が必要
+            (req, res, next) => { /**/ next(); }, // nextの引数が必要
+            ...
+            )
+        ```
+- パスワードのハッシュ化はbcriptを使う
+  
 ## ejs
 
 -   Embedded JavaScript
