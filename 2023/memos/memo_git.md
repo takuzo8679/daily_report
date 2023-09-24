@@ -73,4 +73,10 @@
     - featブランチのコミットの親コミットをベースブランチに付け替える
     - ベースブランチがmergeするとmergeが完了する
     - この時はfast-forwardが起こる
+- rebaseを用いたマージ
+    - pull+option
+        - git pull --rebase
+    - fetch base
+        - git fetch origin main
+        - git rebase FETCH_HEAD
 - mergeとの違い:コミット履歴が分岐されずに一直線になる
