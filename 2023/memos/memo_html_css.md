@@ -6,7 +6,13 @@
 - 複数の要素を横幅に並べる：width:100%/n;
 - インライン要素の中央寄せ：display: inline-block;
 - 時間遷移：transition: all 0.5s;
+- 左右に寄せる：float: left/right;
 - 要素を横並びにする方法：display:flex;
+- ボックスモデル
+    - width は中身の幅。p なら文字列の端から端になる。
+    - padding は width から外側に広がる
+    - margin は padding から外側に広がる
+    - ボックスの大きさ=width+padding+margin
 - ボタンの作り方
     - `<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">`
     -
@@ -64,3 +70,5 @@
             clear:left;
         }
         ```
+## Gridレイアウト
+ 
