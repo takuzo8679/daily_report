@@ -71,4 +71,49 @@
         }
         ```
 ## Gridレイアウト
- 
+- エクセルのセルのように画面を構成する手法
+- containerクラスの中にdiv要素を配置してく
+### css
+Sample
+
+|||
+|--|--|
+|itemA|itemB|
+|itemA|itemC|
+|||
+
+```css
+.container{
+    /* グリッドレイアウトの指定 */
+    display: grid;
+    width: 800;
+    /* 縦の2番目の線を引く。一つ目は180px。1frは残りのスペース(800-180=620) */
+    grid-template-columns: 180px 1fr;
+    /* 比率だけで指定も可能　2:3:1 */
+    grid-template-columns: 2fr 3fr 1fr;
+
+    /* 横の2番目の線を引く。一つ目は120px。2つ目は90px */
+    grid-template-rows: 120px 90px;
+
+    /* 間隔の指定 縦　横 */
+    gap: 30px 20px;
+}
+.itemA{
+    /* 縦線の指定：1と2 */
+    grid-column: 1/2;
+    /* 横線の指定：1と3 */
+    grid-row: 1/3;
+}
+.itemB{
+    /* 番号が続く場合は/を省略できる */
+    grid-column: 2;/* 2/3と同じ */
+    grid-row: 1;
+}
+.itemC{
+    /* Grid layoutではセルサイズが1の場合は
+    左上から右、下の順に自動で判別して埋めてくれる */
+    /* grid-column: 2; 省略可能*/
+    /* grid-row: 2; 省略可能*/
+}
+
+``` 
