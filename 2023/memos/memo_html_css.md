@@ -7,6 +7,13 @@
 - インライン要素の中央寄せ：display: inline-block;
 - 時間遷移：transition: all 0.5s;
 - 左右に寄せる：float: left/right;
+- 文字を左に寄せる:`margin-left: auto;`
+- 文字の装飾をなくす
+    - 親の設定を維持`color: inherit;`
+    - 設定を外す`text-decoration: none;`
+- 境界線
+    -  作る：`border: 1px solid #000;`
+    -  角を丸める：`border-radius: 30px;`
 - 要素を横並びにする方法：display:flex;
 - ボックスモデル
     - width は中身の幅。p なら文字列の端から端になる。
@@ -72,7 +79,9 @@
         ```
 ## Gridレイアウト
 - エクセルのセルのように画面を構成する手法
+- まず画面全体を大きなレイアウトを決める
 - containerクラスの中にdiv要素を配置してく
+- 必要に応じてGrid LayoutやFlex Boxを入れ子にする
 ### css
 Sample
 
@@ -115,5 +124,35 @@ Sample
     /* grid-column: 2; 省略可能*/
     /* grid-row: 2; 省略可能*/
 }
-
 ``` 
+### html5の新規tag
+- `<div class="header"></div>`と従来書いていた
+- `<header></header>`と書けるようになった
+- 他にもfooter, main, figure, articleなど多数ある
+- タグを書いた上でclassの宣言も可能
+- htmlが認識できるタグで書いた方が処理上有利になるとのこと
+
+### Flex box
+- itemを左右に並べるのに有利
+- Grid layoutの前によく使われた手法
+```css
+.header {
+    /* Flex boxの指定 */
+    display: flex;
+    /* コンテンツを左右均等に配置 */
+    justify-content: space-between;
+}
+.header ul{
+    /* Flex boxの指定 */
+    display: flex;
+    /* liの・の削除 */
+    list-style-type: none;
+    /* liを離す */
+    /* まず幅指定 */
+    width: 180px;
+    /* 次に左右均等配置 */
+    justify-content: space-between;
+}```
+
+## リンク
+- href="#"とするとクリックしても何も起きない。ヌルリンクと呼ばれる。
