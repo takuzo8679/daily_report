@@ -1,98 +1,101 @@
-# html cssの学習メモ
+# html css の学習メモ
 
-- 行の高さ指定：`line-height`：heightと一致させると高さに一致
-- 太字：font-weight:normal/bold;
-- 画像を横幅いっぱいに広げる:width:100%;
-- 複数の要素を横幅に並べる：width:100%/n;
-- インライン要素の中央寄せ：display: inline-block;
-- 時間遷移：transition: all 0.5s;
-- 左右に寄せる：float: left/right;
-- 文字を左に寄せる:`margin-left: auto;`
-- 文字の装飾をなくす
-    - 親の設定を維持`color: inherit;`
-    - 設定を外す`text-decoration: none;`
-- 境界線
-    -  作る：`border: 1px solid #000;`
-    -  角を丸める：`border-radius: 30px;`
-- 要素を横並びにする方法：display:flex;
-- ボックスモデル
-    - width は中身の幅。p なら文字列の端から端になる。
-    - padding は width から外側に広がる
-    - margin は padding から外側に広がる
-    - ボックスの大きさ=width+padding+margin
-- ボタンの作り方
-    - `<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">`
-    -
-        ```html
+-   行の高さ指定：`line-height`：height と一致させると高さに一致
+-   太字：font-weight:normal/bold;
+-   画像を横幅いっぱいに広げる:width:100%;
+-   複数の要素を横幅に並べる：width:100%/n;
+-   インライン要素の中央寄せ：display: inline-block;
+-   時間遷移：transition: all 0.5s;
+-   左右に寄せる：float: left/right;
+-   文字を左に寄せる:`margin-left: auto;`
+-   文字の装飾をなくす
+    -   親の設定を維持`color: inherit;`
+    -   設定を外す`text-decoration: none;`
+-   初期設定をクリアする：`margin: 0;`
+-   境界線
+    -   作る：`border: 1px solid #000;`
+    -   角を丸める：`border-radius: 30px;`
+-   要素を横並びにする方法：display:flex;
+-   ボックスモデル
+    -   width は中身の幅。p なら文字列の端から端になる。
+    -   padding は width から外側に広がる
+    -   margin は padding から外側に広がる
+    -   ボックスの大きさ=width+padding+margin
+-   ボタンの作り方
+    -   `<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">`
+    -   ```html
         <a class="btn facebook" href="#">
-        <span class="fa fa-facebook">
-            Facebookで登録
-        </span>
+            <span class="fa fa-facebook"> Facebookで登録 </span>
         </a>
         ```
-    - display:inline-block;
-    - 角を丸めるborder-radius:30px;
-    - background-color:#3b5998;
-- ボタンの影
-    - box-shadow: (none|0px 7px #1a7940);
-    - position:relative;
-    - top:7px;
+    -   display:inline-block;
+    -   角を丸める border-radius:30px;
+    -   background-color:#3b5998;
+-   ボタンの影
 
-- 文字の間隔：letter-spacing:5px;
-- 透過＠カーソル当てた時
-- 
-    ```css
-    .btn:hover{
-      opacity:1;
+    -   box-shadow: (none|0px 7px #1a7940);
+    -   position:relative;
+    -   top:7px;
+
+-   文字の間隔：letter-spacing:5px;
+-   透過＠カーソル当てた時
+-   ```css
+    .btn:hover {
+        opacity: 1;
     }
     ```
-- 背景イメージ
-- 
-    ```css
+-   背景イメージ
+-   ```css
     background-image: url(https://xxx);
-    background-size:cover;
+    background-size: cover;
     ```
-- 背景固定
-    - position: fixed;
-    - top:0;
-    - z-index:10;
-- 要素を重ねる
-    -  
+-   背景固定
+    -   position: fixed;
+    -   top:0;
+    -   z-index:10;
+-   要素を重ねる
+    -
     ```css
-    .parent{
-        position:relative; /*親の座標を起点にする*/
+    .parent {
+        position: relative; /*親の座標を起点にする*/
     }
-    .child{
-        position:absolute;
-        top:90px;
-        width:100%; /*幅いっぱい*/
+    .child {
+        position: absolute;
+        top: 90px;
+        width: 100%; /*幅いっぱい*/
     }
     ```
-- 子要素が全てfloatでも親要素が高さを持つようにする
-    - 空クラスを追加:`<div class="clear"></div>`
-        - 最後の要素の次に追加すること！
-    - css
+-   子要素が全て float でも親要素が高さを持つようにする
+    -   空クラスを追加:`<div class="clear"></div>`
+        -   最後の要素の次に追加すること！
+    -   css
         ```css
-        .clear{
-            clear:left;
+        .clear {
+            clear: left;
         }
         ```
-## Gridレイアウト
-- エクセルのセルのように画面を構成する手法
-- まず画面全体を大きなレイアウトを決める
-- containerクラスの中にdiv要素を配置してく
-- 必要に応じてGrid LayoutやFlex Boxを入れ子にする
+
+## Grid レイアウト
+
+-   エクセルのセルのように画面を構成する手法
+-   まず画面全体を大きなレイアウトを決める
+-   container クラスの中に div 要素を配置してく
+-   必要に応じて Grid Layout や Flex Box を入れ子にする
+-   grid-template-rows の高さ＝一つ上の要素との感覚＋ height
+-   1 列で行を追加するだけの場合は display:gird;の指定だけで OK(grid-template-xxx は不要)
+
 ### css
+
 Sample
 
-|||
-|--|--|
-|itemA|itemB|
-|itemA|itemC|
-|||
+|       |       |
+| ----- | ----- |
+| itemA | itemB |
+| itemA | itemC |
+|       |       |
 
 ```css
-.container{
+.container {
     /* グリッドレイアウトの指定 */
     display: grid;
     width: 800;
@@ -103,38 +106,44 @@ Sample
 
     /* 横の2番目の線を引く。一つ目は120px。2つ目は90px */
     grid-template-rows: 120px 90px;
+    /* 子要素の高さにする場合はautoと書ける */
+    grid-template-rows: auto auto;
 
     /* 間隔の指定 縦　横 */
     gap: 30px 20px;
 }
-.itemA{
+.itemA {
     /* 縦線の指定：1と2 */
     grid-column: 1/2;
     /* 横線の指定：1と3 */
     grid-row: 1/3;
 }
-.itemB{
+.itemB {
     /* 番号が続く場合は/を省略できる */
-    grid-column: 2;/* 2/3と同じ */
+    grid-column: 2; /* 2/3と同じ */
     grid-row: 1;
 }
-.itemC{
+.itemC {
     /* Grid layoutではセルサイズが1の場合は
     左上から右、下の順に自動で判別して埋めてくれる */
     /* grid-column: 2; 省略可能*/
     /* grid-row: 2; 省略可能*/
 }
-``` 
-### html5の新規tag
-- `<div class="header"></div>`と従来書いていた
-- `<header></header>`と書けるようになった
-- 他にもfooter, main, figure, articleなど多数ある
-- タグを書いた上でclassの宣言も可能
-- htmlが認識できるタグで書いた方が処理上有利になるとのこと
+```
+
+## html5 の新規 tag
+
+-   `<div class="header"></div>`と従来書いていた
+-   `<header></header>`と書けるようになった
+-   他にも footer, main, figure, article など多数ある
+-   タグを書いた上で class の宣言も可能
+-   html が認識できるタグで書いた方が処理上有利になるとのこと
 
 ### Flex box
-- itemを左右に並べるのに有利
-- Grid layoutの前によく使われた手法
+
+-   item を左右に並べるのに有利
+-   Grid layout の前によく使われた手法
+
 ```css
 .header {
     /* Flex boxの指定 */
@@ -152,7 +161,20 @@ Sample
     width: 180px;
     /* 次に左右均等配置 */
     justify-content: space-between;
-}```
-
+}
+```
 ## リンク
-- href="#"とするとクリックしても何も起きない。ヌルリンクと呼ばれる。
+- href="#" とするとクリックしても何も起きない。ヌルリンクと呼ばれる。
+
+## レスポンシブWebデザイン
+- css3から導入された
+- 右記の三つから構成されるMedia Queries, Fluid Grid, Fluid Image
+    - メディアクエリ、フルードグリッド、フルードイメージ
+### Media Queries
+- 設計方針：最初にスマホなどの小さい画面から実装してタブレット、PCの順に大きくしていく
+    - htmlは共通
+    - cssはスマホの下にタブレットなどを追記していく→デバイスによって上書きで読み込まれる
+    - Media Queryが画面サイズを検出してくれる
+        - `@media screen and (min-width: 600px) {}`
+### Fluid Grid
+###Fluid Image
