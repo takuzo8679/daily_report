@@ -176,5 +176,15 @@ Sample
     - cssはスマホの下にタブレットなどを追記していく→デバイスによって上書きで読み込まれる
     - Media Queryが画面サイズを検出してくれる
         - `@media screen and (min-width: 600px) {}`
+#### html
+- レスポンスwebデザイン使用時のメタタグ
+    - `<meta name="viewport" content="width=device-width">`
+    - 大きな表示をデバイスに合わせるおまじない
 ### Fluid Grid
-###Fluid Image
+- 画面サイズに応じてフォント、画像などの要素を変化させる技術
+- 相対値の%やemで指定する
+    - 1emが基準値の1倍
+    - font-sizeのデフォルトは16pxなので、その時の1.5emは24pxになる
+    - line-heightは文字数を基準にするのでよく使われる
+- 最初から相対値指定は難しい。最初は絶対値で画面ができてから相対値に直すのが良い。
+### Fluid Image
