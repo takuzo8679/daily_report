@@ -21,6 +21,7 @@
     -   padding は width から外側に広がる
     -   margin は padding から外側に広がる
     -   ボックスの大きさ=width+padding+margin
+-   背景色を指定しない場合は透明になる
 -   ボタンの作り方
     -   `<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">`
     -   ```html
@@ -176,15 +177,40 @@ Sample
     - cssはスマホの下にタブレットなどを追記していく→デバイスによって上書きで読み込まれる
     - Media Queryが画面サイズを検出してくれる
         - `@media screen and (min-width: 600px) {}`
+- 横幅であるwidthや余白をpxで直接指定せずに%で記述する
+    - %は親要素のwidthで決まる
+    - 画像のwidthが決まればheightが自動で決まるのでautoで良い
+        - grid-template-rows
+            - 縦に積み上げるだけなら全てautoで不要になる
+    - 全ての項目を相対値で決める必要はない
+        - 場合によっては割り切る
+- コンテンツの内容が少ない場合はmax-widthを設けて余白を増やす
 #### html
 - レスポンスwebデザイン使用時のメタタグ
     - `<meta name="viewport" content="width=device-width">`
     - 大きな表示をデバイスに合わせるおまじない
-### Fluid Grid
+### Fluid Grid / Image
 - 画面サイズに応じてフォント、画像などの要素を変化させる技術
 - 相対値の%やemで指定する
     - 1emが基準値の1倍
     - font-sizeのデフォルトは16pxなので、その時の1.5emは24pxになる
     - line-heightは文字数を基準にするのでよく使われる
+    - `width: 100%;`として横を画面いっぱいにするのがよく使われる
 - 最初から相対値指定は難しい。最初は絶対値で画面ができてから相対値に直すのが良い。
+- 背景画像として設定する場合
+```css
+figure{
+    background-image: url(images/mejiro.jpg);
+    /* 親の高さを継承 */
+    width: 100%;
+    /* 高さは0として */
+    height: 0;
+    /* 比率を入れる */
+    padding-bottom: 66.72%;
+    /* 下記を入れると全体表示 */
+    background-size: cover;
+    margin-bottom: 30px;
+}
+```
+
 ### Fluid Image
