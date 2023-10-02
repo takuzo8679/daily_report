@@ -22,6 +22,9 @@
     -   margin は padding から外側に広がる
     -   ボックスの大きさ=width+padding+margin
 -   背景色を指定しない場合は透明になる
+-   繰り返し：repeat(3, 22px)は 22px 22px 22pxと同じ
+-   section tag:h1が含まれるくらい大きい見出しで使われる
+-   クラスの共通設定を記載する：`.text1, .text2 {}`
 -   ボタンの作り方
     -   `<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">`
     -   ```html
@@ -33,7 +36,6 @@
     -   角を丸める border-radius:30px;
     -   background-color:#3b5998;
 -   ボタンの影
-
     -   box-shadow: (none|0px 7px #1a7940);
     -   position:relative;
     -   top:7px;
