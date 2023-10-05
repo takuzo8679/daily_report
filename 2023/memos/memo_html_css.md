@@ -1,5 +1,6 @@
 # html css の学習メモ
 
+## 汎用
 -   行の高さ指定：`line-height`：height と一致させると高さに一致
 -   太字：font-weight:normal/bold;
 -   画像を横幅いっぱいに広げる:width:100%;
@@ -25,6 +26,19 @@
 -   繰り返し：repeat(3, 22px)は 22px 22px 22pxと同じ
 -   section tag:h1が含まれるくらい大きい見出しで使われる
 -   クラスの共通設定を記載する：`.text1, .text2 {}`
+- 構造化タグ：レイアウトを変える目的のみでhtmlに追加するタグのこと
+- span自身は幅と高さを持たないので指定したい場合は`display:inline-block;`を追加する
+- formの属性
+    - action:送り先(ex. /index/post)
+    - method:post/get
+    - encotype:暗号化方式(ex.text/plain)
+    - id:uniqueな名前
+- inputの属性
+    - type:入力データの形式(ex.text/radio/check box/pull down)
+    - name:処理時に使用する名前
+    - size:入力される文字数(半角)
+    - max-length
+## 具体例
 -   ボタンの作り方
     -   `<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">`
     -   ```html
@@ -112,7 +126,7 @@ Sample
     /* 子要素の高さにする場合はautoと書ける */
     grid-template-rows: auto auto;
 
-    /* 間隔の指定 縦　横 */
+    /* 間隔の指定 行間　列幅 */
     gap: 30px 20px;
 }
 .itemA {
