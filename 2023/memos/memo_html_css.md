@@ -7,7 +7,9 @@
 -   複数の要素を横幅に並べる：width:100%/n;
 -   インライン要素の中央寄せ：display: inline-block;
 -   時間遷移：transition: all 0.5s;
--   左右に寄せる：float: left/right;
+-   左右に寄せる
+    -   float: left/right; // flex boxの場合
+    -   margin: 0 0 0 auto; // 左だけautoにすることで右端による
 -   文字を左に寄せる:`margin-left: auto;`
 -   文字の装飾をなくす
     -   親の設定を維持`color: inherit;`
@@ -33,11 +35,15 @@
     - method:post/get
     - encotype:暗号化方式(ex.text/plain)
     - id:uniqueな名前
-- inputの属性
-    - type:入力データの形式(ex.text/radio/check box/pull down)
-    - name:処理時に使用する名前
-    - size:入力される文字数(半角)
-    - max-length
+- input
+    - 属性
+        - type:入力データの形式(ex.text/radio/check box/pull down)
+            - type="reset"でリセットする
+        - name:処理時に使用する名前(name=xxxで取り出す)
+        - size:入力される文字数(半角)
+        - maxlength:入力文字数の最大値
+        - form:上のformのidと同じものを入れて紐付ける
+    - formタグの外側に置くことに注意
 ## 具体例
 -   ボタンの作り方
     -   `<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">`
