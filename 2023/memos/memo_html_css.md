@@ -44,6 +44,19 @@
         - maxlength:入力文字数の最大値
         - form:上のformのidと同じものを入れて紐付ける
     - formタグの外側に置くことに注意
+- aタグは包む順番は関係ない(pの内側でも外側でもOK)
+- aタグで画像を指定した時のずれ
+    - imgタグinline要素（横幅を持たない）ため
+    - aタグで包んだimgタグをblock要素にして幅を指定すれば良い
+    - ```css
+        .SNS_Logo a {
+            display: block;
+            width: 20%;
+        }
+        .SNS_Logo a img {
+            width: 100%;
+        }
+        ```
 ## 具体例
 -   ボタンの作り方
     -   `<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">`
