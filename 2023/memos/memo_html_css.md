@@ -7,6 +7,8 @@
 -   複数の要素を横幅に並べる：width:100%/n;
 -   インライン要素の中央寄せ：display: inline-block;
 -   時間遷移：transition: all 0.5s;
+-   要素を横並びにする方法：display:flex;
+-   エリアを要素の大きさを内容に合わせる：width: fit-content;
 -   左右に寄せる
     -   float: left/right; // flex boxの場合
     -   margin: 0 0 0 auto; // 左だけautoにすることで右端による
@@ -18,7 +20,6 @@
 -   境界線
     -   作る：`border: 1px solid #000;`
     -   角を丸める：`border-radius: 30px;`
--   要素を横並びにする方法：display:flex;
 -   ボックスモデル
     -   width は中身の幅。p なら文字列の端から端になる。
     -   padding は width から外側に広がる
@@ -57,6 +58,10 @@
             width: 100%;
         }
         ```
+- 文字に下線をつける
+    - text-decoration: underline; text-underline-offset:0.5em;
+    - border-bottom:;width:content-fit;
+    - `<u></u>`
 ## 具体例
 -   ボタンの作り方
     -   `<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">`
