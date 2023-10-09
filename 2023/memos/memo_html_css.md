@@ -62,6 +62,7 @@
     - text-decoration: underline; text-underline-offset:0.5em;
     - border-bottom:;width:content-fit;
     - `<u></u>`
+- imgを丸くする：border-radius:50%;
 ## 具体例
 -   ボタンの作り方
     -   `<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">`
@@ -115,6 +116,15 @@
             clear: left;
         }
         ```
+- 親のmarginやpaddingを無視して画像をウインドウ幅いっぱいに表示する(参考：haniwaman.com/inner-over/)
+    ```css
+    /* ウィンドウ幅に広げる */
+    width:100vm
+    /* このままだと画像の始点が親の位置のままなのでウインドウ端に移動する */
+    /*  1.  50%でウィンドウの中央に移動する */
+    /*  2. -50vmで画像幅の半分だけ画面たんに移動する */
+    margin: 0 calc(50% -50vm);
+    ```
 
 ## Grid レイアウト
 
