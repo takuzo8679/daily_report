@@ -80,3 +80,14 @@
         - git fetch origin main
         - git rebase FETCH_HEAD
 - mergeとの違い:コミット履歴が分岐されずに一直線になる
+#### rebaseでコミットをまとめる
+- git lg #ログを確認
+- git rebase -i HEAD~<件数>
+- コミットの古い方が上、新しいのが下の順
+- squashの範囲を決める
+    - squashに指定すると直前のコミットと一つになる
+- pickの部分をs(squashでも可)に書き換える
+- :wqで閉じて次へ
+- コミットメッセージの編集画面になる
+- squashした箇所のコミットメッセージを編集する
+- :wqで閉じると完了
