@@ -33,9 +33,9 @@
 - クラスの共通設定を記載する：`.text1, .text2 {}`
 - 構造化タグ：レイアウトを変える目的のみで html に追加するタグのこと
 - span
-    - 特に意味がないタグになる
-    - 実務上は装飾時に活用される
-    - 自身は幅と高さを持たないので指定したい場合は`display:inline-block;`を追加する
+  - 特に意味がないタグになる
+  - 実務上は装飾時に活用される
+  - 自身は幅と高さを持たないので指定したい場合は`display:inline-block;`を追加する
 - form の属性
   - action:送り先(ex. /index/post)
   - method:post/get
@@ -96,11 +96,9 @@
   - 角を丸める border-radius:30px;
   - background-color:#3b5998;
 - ボタンの影
-
   - box-shadow: (none|0px 7px #1a7940);
   - position:relative;
   - top:7px;
-
 - 文字の間隔：letter-spacing:5px;
 - 透過＠カーソル当てた時
 - ```css
@@ -145,6 +143,31 @@
   /*  1.  50%でウィンドウの中央に移動する */
   /*  2. -50vwで画像幅の半分だけ画面端に移動する */
   margin: 0 calc(50% - 50vw);
+  ```
+- css のネスト化
+  - 共通のクラスだけ common-text とする方がシンプルに記載できる
+    - class 名は"self-produce-contents-text"のように長くする必要はない
+
+  ```html
+  <section class="section1">
+    <p class="common-text"></p>
+  </section>
+
+  <section class="sectioin2">
+    <p class="common-text"></p>
+  </section>
+  ```
+
+  ```css
+  .common-text {
+    <!-- 両方に適応したいstyle -->
+  }
+
+  .section1 {
+    .common-text {
+      <!-- section1の方のみに、適応したいstyle -->
+    }
+  }
   ```
 
 ## Grid レイアウト
