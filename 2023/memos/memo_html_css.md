@@ -47,9 +47,30 @@
       - type="reset"でリセットする
     - name:処理時に使用する名前(name=xxx で取り出す)
     - size:入力される文字数(半角)
-    - maxlength:入力文字数の最大値
+    - maxlength:入力文字数の最大値(devツールで書き換え可能)
+    - required:入力必須にする(devツールで書き換え可能)
+    - placeholder:入力前の説明
     - form:上の form の id と同じものを入れて紐付ける
-  - form タグの外側に置くことに注意
+      - form タグの外側に置いた場合に使用
+    - radioサンプル（nameを同じ名前にする）
+      ```html
+      <input type="radio" name="gender" value="male" />male
+      <input type="radio" name="gender" value="female" />female
+      <input type="radio" name="gender" value="unselected" checked />無回答
+      ```
+  - label
+    - input要素と関連付ける
+      - textと関連づけると入力欄にフォーカスされる
+      - ラジオボタンに関連づけると選択される
+    - ```html
+      <!-- forで関連づける -->
+      <label for="username">お名前</label>
+      <input type="text" id="username"/>
+      <!-- またはlabelで囲う -->
+      <label><input type="radio" name="gender" value="male"/>male</label>
+
+    ```
+
 - a タグは包む順番は関係ない(p の内側でも外側でも OK)
 - a タグで新タブで開く`target="_blank" rel="noopener"`
 - ページ内リンク
@@ -145,6 +166,7 @@
   margin: 0 calc(50% - 50vw);
   ```
 - css のネスト化
+
   - 共通のクラスだけ common-text とする方がシンプルに記載できる
     - class 名は"self-produce-contents-text"のように長くする必要はない
 
@@ -168,6 +190,71 @@
       <!-- section1の方のみに、適応したいstyle -->
     }
   }
+  ```
+
+- テーブル（表）の作り方
+
+  - 基本
+    - 属性：colspan、rowspan で結合
+
+  ```html
+  <table border="1">
+    <caption>
+      caption
+    </caption>
+    <!-- table row -->
+    <tr>
+      <!-- table headerー -->
+      <th>性</th>
+      <th>名</th>
+    </tr>
+    <tr>
+      <!-- table data -->
+      <td>山田</td>
+      <td>太郎</td>
+    </tr>
+    <tr>
+      <td>田中</td>
+      <td>花子</td>
+    </tr>
+  </table>
+  ```
+
+  - thead, tbody, tfoot を使用した方が css を当てやすいが必須ではない
+
+    ```html
+    <table border="1">
+      <thead>
+        <tr>
+          <th>header 1</th>
+          <th>header 2</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>body1</td>
+          <td>body2</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>footer1</td>
+          <td>footer2</td>
+        </tr>
+      </tfoot>
+    </table>
+    ```
+
+- 選択リスト・ドロップダウンは select タグ
+
+  - option で項目を増やし、selected で初期選択
+
+  ```html
+  <select name="area" id="">
+    <option value="" selected></option>
+    <option value="hokkaido">hokkaido</option>
+    <option value="okinawa">okinawa</option>
+  </select>
   ```
 
 ## Grid レイアウト
