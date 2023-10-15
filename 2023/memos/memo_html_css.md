@@ -42,6 +42,8 @@
   - padding は width から外側に広がる
   - margin は padding から外側に広がる
   - ボックスの大きさ=width+padding+margin
+- 文字数の分だけwidthを確保したい場合`width:7em;`
+  - 残りのエリアの例:`width: calc(100%-7em);`
 - 背景色を指定しない場合は透明になる
 - 繰り返し：repeat(3, 22px)は 22px 22px 22px と同じ
 - section tag:h1 が含まれるくらい大きい見出しで使われる
@@ -56,6 +58,8 @@
   - method:post/get
   - encotype:暗号化方式(ex.text/plain)
   - id:unique な名前
+- img
+  - アスペクト比を維持したまま画像幅に合わせる`object-fit: cover;`
 - input
 
   - 属性
@@ -86,10 +90,6 @@
       <!-- またはlabelで囲う -->
       <label><input type="radio" name="gender" value="male" />male</label>
       ```
-
-    ```
-
-    ```
 
 - a タグは包む順番は関係ない(p の内側でも外側でも OK)
 - a タグで新タブで開く`target="_blank" rel="noopener"`
@@ -229,45 +229,25 @@
   ```
 
 - テーブル（表）の作り方
-
-  - 基本
-    - 属性：colspan、rowspan で結合
-
-  ```html
-  <table border="1">
-    <caption>
-      caption
-    </caption>
-    <!-- table row -->
-    <tr>
-      <!-- table headerー -->
-      <th>性</th>
-      <th>名</th>
-    </tr>
-    <tr>
-      <!-- table data -->
-      <td>山田</td>
-      <td>太郎</td>
-    </tr>
-    <tr>
-      <td>田中</td>
-      <td>花子</td>
-    </tr>
-  </table>
-  ```
-
   - thead, tbody, tfoot を使用した方が css を当てやすいが必須ではない
+  - 属性：colspan、rowspan で結合
 
     ```html
     <table border="1">
+      <caption>
+        caption
+      </caption>
       <thead>
+        <!-- table row -->
         <tr>
+          <!-- table headerー -->
           <th>header 1</th>
           <th>header 2</th>
         </tr>
       </thead>
       <tbody>
         <tr>
+          <!-- table data -->
           <td>body1</td>
           <td>body2</td>
         </tr>
@@ -281,8 +261,16 @@
     </table>
     ```
 
+    ```css
+        <!-- 行間設定 -->
+        border-collapse: separate;
+        border-spacing: 20px 5px;
+    ```
+
 - 選択リスト・ドロップダウンは select タグ
+
   - option で項目を増やし、selected で初期選択
+
   ```html
   <select name="area" id="">
     <option value="" selected></option>
@@ -293,11 +281,11 @@
 
 - 図形内の文字の位置を中心にする
   - ```css
-      /* 中央揃えにする */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-  ```
+    /* 中央揃えにする */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    ```
 
 ## Grid レイアウト
 
