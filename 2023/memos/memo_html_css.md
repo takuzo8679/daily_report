@@ -137,9 +137,17 @@
       <h1 style="color: #ff0000">inline</h1>
       <h2>内部参照</h2>
     </body>
-    ß
     ```
-
+- アイコンの使い方
+  ```html
+  <!-- 準備 -->
+  <!-- 読み込み -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <!-- サイトから使用したいものを探す -->
+　<!-- https://icons.getbootstrap.jp/ -->
+  <!-- 使用 -->
+  <i class="bi bi-heart"></i>
+  ```
 ## 具体例
 
 - ボタンの作り方
