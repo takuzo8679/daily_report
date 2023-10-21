@@ -79,6 +79,7 @@
   - `DELETE FROM students WHERE id = 6;`
   - 注意：WHERE 句がないとすべてを削除してしまう
   - FROM のつけ忘れ注意
+- offset 3で取得開始位置を指定できる。
 
 ## データ型
 

@@ -1,10 +1,25 @@
 # Ruby On Rails メモ
 
+## 概要
+
+- 設定より規約：CoC Convention over Configuration
+  - 規約に則った記載をすることで設定を自動で行う
+    - 例。ModelName: User -> TableName: users
+      - 大文字始まり単数形 小文字複数形
+- DRY:共通処理の集約
+- MVC
+
+## 環境
+- gem -v
+- gem install rails -v 7.0.0 -N
+  - -N ドキュメントをインストールしないオプション
+
 ## rails コマンド
 
 ### アプリ初期化
 
 - `rails new tweet_app`:必要ファイル生成
+    - rails _7.0.0_ new helloとversionを指定することもできる
 - `rails server`:server 起動
 - `rails generate controller home top`:/home/top にトップページ作成
   - home というコントローラーが作成されるので一度しか使えない
