@@ -10,6 +10,7 @@
 - MVC
 
 ## 環境
+
 - gem -v
 - gem install rails -v 7.0.0 -N
   - -N ドキュメントをインストールしないオプション
@@ -19,7 +20,7 @@
 ### アプリ初期化
 
 - `rails new tweet_app`:必要ファイル生成
-    - rails _7.0.0_ new helloとversionを指定することもできる
+  - rails _7.0.0_ new hello と version を指定することもできる
 - `rails server`:server 起動
 - `rails generate controller home top`:/home/top にトップページ作成
   - home というコントローラーが作成されるので一度しか使えない
@@ -31,11 +32,14 @@
 - マイグレーションファイル作成
   - モデルも作成
     - `rails g model Post content:text user_id:integer`を実行
-      - 他の例：`rails g model User name:string email:string`
       - g:generate の短縮
-      - Post' posts テーブルを作成する際は先頭おおもじの単数系にする
+      - Post
+        - 作成するモデル名。先頭大文字の単数系であることに注意
+        - posts テーブルが作成される
       - content:column
       - text:データ型で長い文字列。sting:短い文字列
+      - 他の例：`rails g model User name:string email:string`
+        - モデル名が大文字始まりの単数系であることに注意
     - 作成場所
       - migration:`/db/migrate/20230831235959_create_posts.rb`
       - model:`app/models/post.rb`
@@ -50,6 +54,10 @@
     ```
 - 実行:`rails db:migrate`
   - DB 未反映のマイグレーションファイルがあると Rails がエラーになるので注意
+- DB 管理画面
+  - 起動:rails db、または rails dbconsole
+  - table 一覧：.schema
+  - 終了: .exit
 
 ### Gemfile
 
@@ -60,6 +68,8 @@
 ### rails console
 
 - `rails console`で起動、`quit`で終了
+- データ作成
+  - Task.create(title: 'test1')
 
 ## DB 操作
 
@@ -196,6 +206,17 @@
   - ルーティングは上から順に探していく
   - URL に id を含める:`get "posts/:id" => "posts#show"`とすると　 1 でも 2 でも show へ行く
     - `:id`は post 内の末尾に書く
+  - `resources :tasks`と記載すると関連する CRUD を自動生成してれる
+  - | Prefix    | Verb   | URI Pattern     | Controller#Action |
+    | --------- | ------ | --------------- | ----------------- |
+    | tasks     | GET    | /tasks          | tasks#index       |
+    |           | POST   | /tasks          | tasks#create      |
+    | new_task  | GET    | /tasks/new      | tasks#new         |
+    | edit_task | GET    | /tasks/:id/edit | tasks#edit        |
+    | task      | GET    | /tasks/:id      | tasks#show        |
+    |           | PATCH  | /tasks/:id      | tasks#update      |
+    |           | PUT    | /tasks/:id      | tasks#update      |
+    |           | DELETE | /tasks/:id      | tasks#destroy     |
 
 ## レイアウト
 
@@ -268,18 +289,21 @@
     - `if @user && @user.authenticate(params[:password])`
 - ``:
 
-##
+## その他
 
-- ``:
-- ``:
-
-##
-
-- ``:
-- ``:
-
-##
-
-- ``:
-- ``:
--
+- ストロングパラメータ
+  - form のラベルなどは dev ツール書き換え可能なので脆弱性がある
+    - そのままモデル層に渡すと不正なカラムの下記ができる
+  - ストロングパラメータを使用することで意図してブロックする
+```ruby
+    def create
+        p task_params #正しい場合はそのまま通り、不正の場合はエラーとなる
+    end
+    private
+    def task_params
+        params.require(:task).permit(:title)
+    end
+```
+- turbo
+  - Rails7から導入された非同期通信の仕組み
+  - JavaScriptが不要になる
