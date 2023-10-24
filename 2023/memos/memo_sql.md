@@ -1,4 +1,4 @@
-# SQL メモ
+# SQLメモ
 
 - テーブル
   - 作成
@@ -10,15 +10,15 @@
 - 日付データのフォーマット：`"2017-01-08"`
   - ダブルクォーテーションでくくる
   - ハイフンで繋ぐ
-  - 0 を足して２桁
+  - 0を足して２桁
 - 正規表現：`like "%文字列%"`
   - ダブルクォーテーションでくくる
   - %がワイルドカード
 - 否定：`where not name like "%プリン%";` // プリンを含まない
-- NULL は=ではなく is を使用する
+- NULLは=ではなくisを使用する
   - x where column = NULL
   - o where column is NULL
-- `select DISTINCT(name)`で name カラムの重複を削除
+- `select DISTINCT(name)`でnameカラムの重複を削除
 - 計算
   - 単純計算：`select price, price * 1.10`で計算が可能
   - 合計:`select sum(price)`
@@ -26,20 +26,20 @@
   - 最大:`select max(price)`
   - 最小:`select min(price)`
   - カラムデータ個数
-    - `select count(price)`（null 含む）
-    - `select count(*)`（null 除く）
+    - `select count(price)`（null含む）
+    - `select count(*)`（null除く）
 - グループ化
   - `GROUP BY`
-    - select で使えるのは GROUP BY に指定しているから無名と集計関数だけ
+    - selectで使えるのはGROUP BYに指定しているから無名と集計関数だけ
     - o: `SELECT SUM(price), purchased_at FROM purchases GROUP BY purchased_at`
     - x: `SELECT price, purchased_at FROM purchases GROUP BY purchased_at`
       - 集計されない
     - 複数指定:`GROUP BY
-    - where 検索が行われたあとにグループ化される
-  - `GROUP BY カラム名 HAVING 条件` グループ化してからさらに絞り込む
+    - where検索が行われたあとにグループ化される
+  - `GROUP BYカラム名HAVING条件` グループ化してからさらに絞り込む
     - 検索対象
-      - where は最初に実行されるのでテーブル全体
-      - having は GROUP BY でグールプされたものを対象
+      - whereは最初に実行されるのでテーブル全体
+      - havingはGROUP BYでグールプされたものを対象
     - 注意：条件にはグループ化されたカラム名(ex.sum(price))を使用
     - ```sql
       SELECT SUM(price), purchased_at,character_name
@@ -64,21 +64,21 @@
         ON players.country_id = countries_id;
       ```
     - 順番：JOIN->SELECT
-    - キーが NULL の場合は結合元のレコードごと表示されない
+    - キーがNULLの場合は結合元のレコードごと表示されない
   - LEFT JOIN
-    - キーが NULL の場合でも結合元のレコードが表示される
+    - キーがNULLの場合でも結合元のレコードが表示される
   - 複数回実行可能
 - レコード追加
   - `INSERT INTO students (name, course) VALUES("Kate", "Java");`
-  - VALUES は VALUE の単数ではなく VALUES の複数形
+  - VALUESはVALUEの単数ではなくVALUESの複数形
   - `create table users (id int unsigned auto_increment not null primary key, name varchar(32), ageint not null);`
 - レコード更新
   - `UPDATE students SET name='Jordan', course='HTML' WHERE id = 6;`
-  - 注意:WHERE 句がないとすべてを更新してしまう
+  - 注意:WHERE句がないとすべてを更新してしまう
 - レコード削除
   - `DELETE FROM students WHERE id = 6;`
-  - 注意：WHERE 句がないとすべてを削除してしまう
-  - FROM のつけ忘れ注意
+  - 注意：WHERE句がないとすべてを削除してしまう
+  - FROMのつけ忘れ注意
 - offset 3で取得開始位置を指定できる。
 
 ## データ型
@@ -87,20 +87,20 @@
 
 - int:32bit
 - int unsigned: 符号なし
-- tinyint: -128~127, 01 を扱う時に使用
-- tinyint(1): bool。内部的には 0/1 で扱う
-  - MySQL では 0,null が false、空文字を含んでその他は true
-- double: float もあるが double が使われる
+- tinyint: -128~127, 01を扱う時に使用
+- tinyint(1): bool。内部的には0/1で扱う
+  - MySQLでは0,nullがfalse、空文字を含んでその他はtrue
+- double: floatもあるがdoubleが使われる
 
 ### 文字列型
 
-- char:固定の長さ。長さの指定は char(5)で 5 文字。不足分はスペースで補完。最大 255 文字まで。
-- varchar: 可変長の文字列。最大長さの指定は varchar(5)。最大 255 文字まで。
-- text: 長い文字列。最大 65535 文字。
-- 実務上:255 文字までは varchar、それ以外は text が多い
+- char:固定の長さ。長さの指定はchar(5)で5文字。不足分はスペースで補完。最大255文字まで。
+- varchar: 可変長の文字列。最大長さの指定はvarchar(5)。最大255文字まで。
+- text: 長い文字列。最大65535文字。
+- 実務上:255文字まではvarchar、それ以外はtextが多い
 
 ### 日付・時刻型
 
 - date: YYYY-MM-DD
 - datetime: YYYY-MM-DD hh:mm:ss.nnnnnn
-- time: -838:59:59 から 838:59:59 まで
+- time: -838:59:59から838:59:59まで

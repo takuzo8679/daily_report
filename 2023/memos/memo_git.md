@@ -39,7 +39,7 @@
         - 
         ```sh
         git log # commit idを調べる
-        git cat-file -p 調べたcommit id 
+        git cat-file -p調べたcommit id 
         040000 tree b5018ac3521da3ebbf6b6792e026e9223b67dae6    memos
         tree b176170909607b72f91fe5e742a30c5a9caa7291
         parent 027f266b3e33881c6d7496660c60c746dd33c163
@@ -52,7 +52,7 @@
     - 中身はどのブランチにいるか：`ref: refs/heads/aa`
     - Detached HEADの場合はコミットIDになる 
 - branch
-    - .git/refs/heads 以下にブランチごとにファイルが存在する
+    - .git/refs/heads以下にブランチごとにファイルが存在する
         - main
         - develop
         - staging

@@ -4,7 +4,7 @@
 
 - フロントエンド開発のためのフレームワーク
 - レスポンシブ対応が容易
-- CSS フレームワークとも言われる
+- CSSフレームワークとも言われる
 - メリット：早い
 - デメリット：似たようなデザインになりがち
 - リンク
@@ -36,20 +36,20 @@
 
 ### 使い方
 
-- URL から使いたい要素を探す
+- URLから使いたい要素を探す
 - サンプルコードをコピペする
   - 補足：どんなクラスが指定されているかを意識・確認する
-- active で選択中、disable で無効化
+- activeで選択中、disableで無効化
 - スタイルの当て方
-  - css で手書き指定ではなく class で指定する
-    - 属性の class に追加：class="navbar-light bg-light"
+  - cssで手書き指定ではなくclassで指定する
+    - 属性のclassに追加：class="navbar-light bg-light"
     - 余白：https://getbootstrap.jp/docs/5.3/utilities/spacing/
       - 例: mt-0, ms-1, px-2, p-3
       - margin:m, padding:p,
       - top:p, b:bottom, s:start=left, e:end=right
       - x:left&right, y:top&bottom
       - 0-5
-  - または属性の style="background-color:red;
+  - または属性のstyle="background-color:red;
 - 中央揃えにするには下記で括る
   - `<div class="container"></div>`
   - ウインドウ幅いっぱい：`<div class="container-fluid"></div>`
@@ -78,13 +78,13 @@
 - 幅いっぱい(12)になるブレークポイントを指定する
 
   - 例:`col-sm-6`, `col-xl-2`
-    |種類|class-prefix|画面幅 px|
+    |種類|class-prefix|画面幅px|
     |--|--|--|
-    |ExtraSmall|なし|576 未満|
-    |Small|sm|576 以上|
-    |Medium|md|768 以上|
-    |Large|lg|992 以上|
-    |ExtraLarge|xl|1200 以上|
+    |ExtraSmall|なし|576未満|
+    |Small|sm|576以上|
+    |Medium|md|768以上|
+    |Large|lg|992以上|
+    |ExtraLarge|xl|1200以上|
 
 - ミックスアンドマッチによるレスポンシブデザイン
   - 元：https://getbootstrap.jp/docs/5.3/layout/grid/#ミックスマッチ
