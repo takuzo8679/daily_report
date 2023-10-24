@@ -1,13 +1,13 @@
-# ruby メモ
+# rubyメモ
 
-- 標準 I/O
+- 標準I/O
   - 出力
-    - puts :改行ありで戻り値 nil
-    - print:改行なしで戻り値 nil
+    - puts :改行ありで戻り値nil
+    - print:改行なしで戻り値nil
     - p :改行ありで戻り値は引数
   - 入力
     - gets.chomp
-    - gets.chomp.to_i で整数変換
+    - gets.chomp.to_iで整数変換
 - 変数
   - 定数
     - 大文字で始める。でも代入できてしまう。
@@ -37,8 +37,8 @@ for val in ary do puts val end
 10.step(1, -2){|i| puts n}
 ```
 
-    - 処理から抜ける：break if 条件式
-    - continue：next if 条件式
+    - 処理から抜ける：break if条件式
+    - continue：next if条件式
 
 - 変数展開
   - `puts "my name is#{name}"`
@@ -49,15 +49,15 @@ for val in ary do puts val end
   - シンボル：コードの一部となる。記法 →ruby
   - ハッシュでは同じように使用できるがシンボル記法が標準
 - メソッド
-  - 戻り値が boolean の場合は?をつける慣例
+  - 戻り値がbooleanの場合は?をつける慣例
     - `date.isSunday?`ではなく`date.sunday?`
 	- !をつけると元の変数を上書きする(ex.revers!)
   - キーワード引数を指定できる
 - コーディングルール
   - 公式はない
-  - The Ruby Style guide が有名
+  - The Ruby Style guideが有名
     - https://github.com/fortissimo1997/ruby-style-guide/blob/japanese/README.ja.md
-  - 静的解析ツールの RoboCop が上記のコーディングルールを満たすかチェックしてくれる
+  - 静的解析ツールのRoboCopが上記のコーディングルールを満たすかチェックしてくれる
     - https://github.com/rubocop/rubocop#readme
 
 ## クラス
@@ -80,7 +80,7 @@ for val in ary do puts val end
   # アクセサ
   user.name = "emma"
   ```
-- initialize メソッドで初期化
+- initializeメソッドで初期化
 - アクセサ
   - インスタンス変数の定義例`attr_accessor :amount`
 - 継承記載例`class Food < Menu`
@@ -89,15 +89,15 @@ for val in ary do puts val end
   - @value :インスタンス変数：インスタンスに一つ持ち、外からアクセス可能
     - メソッド間で共有可能
   - @@value :クラス変数　　　：インスタンス共通＝クラスで一つ持ち、外からアクセス可能
-  - 英大文字 : 定数 : インスタンス共通で一つ持ち、外からアクセス可能 class::const
+  - 英大文字 : 定数 : インスタンス共通で一つ持ち、外からアクセス可能class::const
 - クラスメソッド
   - 定義例。`def self.discountDay?`
   - インスタンスを生成せずに呼べる
   - 対：インスタンスメソッド
 - アクセス権限
-  - public デフォルト
+  - publicデフォルト
   - protected
-  - private 記載して改行してインテントした箇所が適用される
+  - private記載して改行してインテントした箇所が適用される
 - ファイル構造
   - プログラム実行部分：index.rb、その他のクラス：menu.rb
   - ファイルの読み込み`require "./menu"`

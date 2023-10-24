@@ -1,24 +1,24 @@
-# html css の学習メモ
+# html cssの学習メモ
 
 ## 汎用
 
-- ボックス：HTML でマークアップされた要素（タグ＋コンテンツ）
+- ボックス：HTMLでマークアップされた要素（タグ＋コンテンツ）
   - ボックスモデル：内側からコンテンツ領域、パディング領域、ボーダー領域、マージン領域
 - マージンの相殺
-  - 上要素が margin-bottom100px,下要素が margin-top50px の場合、実際の要素間マージンは大きい 100px が優先され、小さい 50px は 100px に内包される形になる
+  - 上要素がmargin-bottom100px,下要素がmargin-top50pxの場合、実際の要素間マージンは大きい100pxが優先され、小さい50pxは100pxに内包される形になる
   - 親子要素でも同様
   - 左右のマージンは相殺されない
 - 擬似クラス
-  - 要素の状態に応じて CSS の設定を適用すること
-    - a:link 未訪問、a:visited, a:hover, a:active クリック状態のリンク
-- フォントは html セレクタに font-family プロパティで指定する
+  - 要素の状態に応じてCSSの設定を適用すること
+    - a:link未訪問、a:visited, a:hover, a:activeクリック状態のリンク
+- フォントはhtmlセレクタにfont-familyプロパティで指定する
   - カンマ区切りで複数指定可能。左優先
   - フォント名はダブルクォーテーションで括るが、フォントファミリは括らない
   - serif:明朝体、sans-serif:ゴシック体
-  - Windows、Mac、Linux で標準で入っているフォントを指定する例
+  - Windows、Mac、Linuxで標準で入っているフォントを指定する例
     - `html{font-family: "メイリオ", "Hiragino Kaku Gothic PronN", sans-serif;}`
-- h1 は 1 ページに一つだけ
-- 行の高さ指定：`line-height`：height と一致させると高さに一致
+- h1は1ページに一つだけ
+- 行の高さ指定：`line-height`：heightと一致させると高さに一致
 - 太字：font-weight:normal/bold;
 - 画像を横幅いっぱいに広げる:width:100%;
 - 複数の要素を横幅に並べる：width:100%/n;
@@ -27,8 +27,8 @@
 - 要素を横並びにする方法：display:flex;
 - エリアを要素の大きさを内容に合わせる：width: fit-content;
 - 左右に寄せる
-  - float: left/right; // flex box の場合
-  - margin: 0 0 0 auto; // 左だけ auto にすることで右端による
+  - float: left/right; // flex boxの場合
+  - margin: 0 0 0 auto; // 左だけautoにすることで右端による
 - 文字を左に寄せる:`margin-left: auto;`
 - 文字の装飾をなくす
   - 親の設定を維持`color: inherit;`
@@ -38,26 +38,26 @@
   - 作る：`border: 1px solid #000;`
   - 角を丸める：`border-radius: 30px;`
 - ボックスモデル
-  - width は中身の幅。p なら文字列の端から端になる。
-  - padding は width から外側に広がる
-  - margin は padding から外側に広がる
+  - widthは中身の幅。pなら文字列の端から端になる。
+  - paddingはwidthから外側に広がる
+  - marginはpaddingから外側に広がる
   - ボックスの大きさ=width+padding+margin
 - 文字数の分だけwidthを確保したい場合`width:7em;`
   - 残りのエリアの例:`width: calc(100%-7em);`
 - 背景色を指定しない場合は透明になる
-- 繰り返し：repeat(3, 22px)は 22px 22px 22px と同じ
-- section tag:h1 が含まれるくらい大きい見出しで使われる
+- 繰り返し：repeat(3, 22px)は22px 22px 22pxと同じ
+- section tag:h1が含まれるくらい大きい見出しで使われる
 - クラスの共通設定を記載する：`.text1, .text2 {}`
-- 構造化タグ：レイアウトを変える目的のみで html に追加するタグのこと
+- 構造化タグ：レイアウトを変える目的のみでhtmlに追加するタグのこと
 - span
   - 特に意味がないタグになる
   - 実務上は装飾時に活用される
   - 自身は幅と高さを持たないので指定したい場合は`display:inline-block;`を追加する
-- form の属性
+- formの属性
   - action:送り先(ex. /index/post)
   - method:post/get
   - encotype:暗号化方式(ex.text/plain)
-  - id:unique な名前
+  - id:uniqueな名前
 - img
   - アスペクト比を維持したまま画像幅に合わせる`object-fit: cover;`
 - input
@@ -65,14 +65,14 @@
   - 属性
     - type:入力データの形式(ex.text/radio/check box/pull down)
       - type="reset"でリセットする
-    - name:処理時に使用する名前(name=xxx で取り出す)
+    - name:処理時に使用する名前(name=xxxで取り出す)
     - size:入力される文字数(半角)
-    - maxlength:入力文字数の最大値(dev ツールで書き換え可能)
-    - required:入力必須にする(dev ツールで書き換え可能)
+    - maxlength:入力文字数の最大値(devツールで書き換え可能)
+    - required:入力必須にする(devツールで書き換え可能)
     - placeholder:入力前の説明
-    - form:上の form の id と同じものを入れて紐付ける
-      - form タグの外側に置いた場合に使用
-    - radio サンプル（name を同じ名前にする）
+    - form:上のformのidと同じものを入れて紐付ける
+      - formタグの外側に置いた場合に使用
+    - radioサンプル（nameを同じ名前にする）
       ```html
       <input type="radio" name="gender" value="male" />male
       <input type="radio" name="gender" value="female" />female
@@ -80,8 +80,8 @@
       ```
   - label
 
-    - input 要素と関連付ける
-      - text と関連づけると入力欄にフォーカスされる
+    - input要素と関連付ける
+      - textと関連づけると入力欄にフォーカスされる
       - ラジオボタンに関連づけると選択される
     - ```html
       <!-- forで関連づける -->
@@ -91,8 +91,8 @@
       <label><input type="radio" name="gender" value="male" />male</label>
       ```
 
-- a タグは包む順番は関係ない(p の内側でも外側でも OK)
-- a タグで新タブで開く`target="_blank" rel="noopener"`
+- aタグは包む順番は関係ない(pの内側でも外側でもOK)
+- aタグで新タブで開く`target="_blank" rel="noopener"`
 - ページ内リンク
   - ```html
     <a href="#hoge"
@@ -102,9 +102,9 @@
           <h2></h2></h2></a
     ></a>
     ```
-- a タグで画像を指定した時のずれ
-  - img タグ inline 要素（横幅を持たない）ため
-  - a タグで包んだ img タグを block 要素にして幅を指定すれば良い
+- aタグで画像を指定した時のずれ
+  - imgタグinline要素（横幅を持たない）ため
+  - aタグで包んだimgタグをblock要素にして幅を指定すれば良い
   - ```css
     .SNS_Logo a {
       display: block;
@@ -118,15 +118,15 @@
   - text-decoration: underline; text-underline-offset:0.5em;
   - border-bottom:;width:content-fit;
   - `<u></u>`
-- img を丸くする：border-radius:50%;
-- small タグ：著作権など小さい表記に使用する（デザイン目的では使用しない）
+- imgを丸くする：border-radius:50%;
+- smallタグ：著作権など小さい表記に使用する（デザイン目的では使用しない）
 - 文字実体参照
-  - 著作権の c マークなど
+  - 著作権のcマークなど
     - `&copy;`と記載すると&copy;と表記される
 - css
-  - 現在の version は 3。下位互換性あり
+  - 現在のversionは3。下位互換性あり
   - 色がゾロ目の場合は簡略できる：#aabbcc=#abc
-  - html でも装飾できるがあまりやるべきでは無い
+  - htmlでも装飾できるがあまりやるべきでは無い
     ```html
     <style>
       h2 {
@@ -142,12 +142,16 @@
   ```html
   <!-- 準備 -->
   <!-- 読み込み -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+  />
   <!-- サイトから使用したいものを探す -->
-　<!-- https://icons.getbootstrap.jp/ -->
+  　<!-- https://icons.getbootstrap.jp/ -->
   <!-- 使用 -->
   <i class="bi bi-heart"></i>
   ```
+
 ## 具体例
 
 - ボタンの作り方
@@ -158,7 +162,7 @@
     </a>
     ```
   - display:inline-block;
-  - 角を丸める border-radius:30px;
+  - 角を丸めるborder-radius:30px;
   - background-color:#3b5998;
 - ボタンの影
   - box-shadow: (none|0px 7px #1a7940);
@@ -191,7 +195,7 @@
     width: 100%; /*幅いっぱい*/
   }
   ```
-- 子要素が全て float でも親要素が高さを持つようにする
+- 子要素が全てfloatでも親要素が高さを持つようにする
   - 空クラスを追加:`<div class="clear"></div>`
     - 最後の要素の次に追加すること！
   - css
@@ -200,7 +204,7 @@
       clear: left;
     }
     ```
-- 親の margin や padding を無視して画像をウインドウ幅いっぱいに表示する(参考：haniwaman.com/inner-over/)
+- 親のmarginやpaddingを無視して画像をウインドウ幅いっぱいに表示する(参考：haniwaman.com/inner-over/)
   ```css
   /* 見えているウィンドウ幅に広げる=Viewport Width */
   width: 100vw;
@@ -209,10 +213,10 @@
   /*  2. -50vwで画像幅の半分だけ画面端に移動する */
   margin: 0 calc(50% - 50vw);
   ```
-- css のネスト化
+- cssのネスト化
 
-  - 共通のクラスだけ common-text とする方がシンプルに記載できる
-    - class 名は"self-produce-contents-text"のように長くする必要はない
+  - 共通のクラスだけcommon-textとする方がシンプルに記載できる
+    - class名は"self-produce-contents-text"のように長くする必要はない
 
   ```html
   <section class="section1">
@@ -237,8 +241,9 @@
   ```
 
 - テーブル（表）の作り方
-  - thead, tbody, tfoot を使用した方が css を当てやすいが必須ではない
-  - 属性：colspan、rowspan で結合
+
+  - thead, tbody, tfootを使用した方がcssを当てやすいが必須ではない
+  - 属性：colspan、rowspanで結合
 
     ```html
     <table border="1">
@@ -275,9 +280,9 @@
         border-spacing: 20px 5px;
     ```
 
-- 選択リスト・ドロップダウンは select タグ
+- 選択リスト・ドロップダウンはselectタグ
 
-  - option で項目を増やし、selected で初期選択
+  - optionで項目を増やし、selectedで初期選択
 
   ```html
   <select name="area" id="">
@@ -295,14 +300,14 @@
     align-items: center;
     ```
 
-## Grid レイアウト
+## Gridレイアウト
 
 - エクセルのセルのように画面を構成する手法
 - まず画面全体を大きなレイアウトを決める
-- container クラスの中に div 要素を配置してく
-- 必要に応じて Grid Layout や Flex Box を入れ子にする
-- grid-template-rows の高さ＝一つ上の要素との感覚＋ height
-- 1 列で行を追加するだけの場合は display:gird;の指定だけで OK(grid-template-xxx は不要)
+- containerクラスの中にdiv要素を配置してく
+- 必要に応じてGrid LayoutやFlex Boxを入れ子にする
+- grid-template-rowsの高さ＝一つ上の要素との感覚＋ height
+- 1列で行を追加するだけの場合はdisplay:gird;の指定だけでOK(grid-template-xxxは不要)
 
 ### css
 
@@ -323,7 +328,7 @@ Sample
   grid-template-columns: 180px 1fr;
   /* minmaxで最小最大を指定できる */
   grid-template-columns: 180px (100px, 1fr);
-  /* 比率だけで指定も可能　2:3:1 */
+  /* 比率だけで指定も可能2:3:1 */
   grid-template-columns: 2fr 3fr 1fr;
 
   /* columnsとrowsを指定しなくてもウィンドウ幅で自動折り返しが可能 */
@@ -360,13 +365,13 @@ Sample
 }
 ```
 
-## html5 の新規グループ化タブ
+## html5の新規グループ化タブ
 
 - `<div class="header"></div>`と従来書いていた
 - `<header></header>`と書けるようになった
-- 他にも footer, main, figure, article など多数ある
-- タグを書いた上で class の宣言も可能
-- html が認識できるタグで書いた方が処理上有利になるとのこと
+- 他にもfooter, main, figure, articleなど多数ある
+- タグを書いた上でclassの宣言も可能
+- htmlが認識できるタグで書いた方が処理上有利になるとのこと
 - div: 意味なし
 - section: セクション
   - 見出し＋コンテンツの塊
@@ -374,15 +379,15 @@ Sample
 - footer: セクションのフッター
 - main: 文章のメインコンテンツ領域
 - article: 記事コンテンツ要素
-  - section との違い:この要素だけで完結するものを示す
+  - sectionとの違い:この要素だけで完結するものを示す
 - aside: 余談要素
   - 用語の説明や広告要素
 - nav: ナビゲーション
 
 ### Flex box
 
-- item を左右に並べるのに有利
-- Grid layout の前によく使われた手法
+- itemを左右に並べるのに有利
+- Grid layoutの前によく使われた手法
 - 親要素であるコンテナに子要素であるアイテムを入れる
 -
 
@@ -398,7 +403,7 @@ Sample
   flex-wrap: wrap;
   /* directionとwrapを一行で指定する */
   flex-flow: row wrap;
-  /* 配置 centerで中央寄せ、space-betweenで均等配置*/
+  /* 配置centerで中央寄せ、space-betweenで均等配置*/
   justify-content: space-between;
   /* 高さ方向の配置を指定する */
   align-items: center;
@@ -422,41 +427,41 @@ Sample
 
 - href="#" とするとクリックしても何も起きない。ヌルリンクと呼ばれる。
 
-## レスポンシブ Web デザイン
+## レスポンシブWebデザイン
 
-- css3 から導入された
-- 右記の三つから構成される Media Queries, Fluid Grid, Fluid Image
+- css3から導入された
+- 右記の三つから構成されるMedia Queries, Fluid Grid, Fluid Image
   - メディアクエリ、フルードグリッド、フルードイメージ
 
 ### Media Queries
 
-- 設計方針：最初にスマホなどの小さい画面から実装してタブレット、PC の順に大きくしていく
-  - html は共通
-  - css はスマホの下にタブレットなどを追記していく → デバイスによって上書きで読み込まれる
-  - Media Query が画面サイズを検出してくれる
+- 設計方針：最初にスマホなどの小さい画面から実装してタブレット、PCの順に大きくしていく
+  - htmlは共通
+  - cssはスマホの下にタブレットなどを追記していく → デバイスによって上書きで読み込まれる
+  - Media Queryが画面サイズを検出してくれる
     - `@media screen and (min-width: 600px) {}`
-- 横幅である width や余白を px で直接指定せずに%で記述する
-  - %は親要素の width で決まる
-  - 画像の width が決まれば height が自動で決まるので auto で良い
+- 横幅であるwidthや余白をpxで直接指定せずに%で記述する
+  - %は親要素のwidthで決まる
+  - 画像のwidthが決まればheightが自動で決まるのでautoで良い
     - grid-template-rows
-      - 縦に積み上げるだけなら全て auto で不要になる
+      - 縦に積み上げるだけなら全てautoで不要になる
   - 全ての項目を相対値で決める必要はない
     - 場合によっては割り切る
-- コンテンツの内容が少ない場合は max-width を設けて余白を増やす
+- コンテンツの内容が少ない場合はmax-widthを設けて余白を増やす
 
 #### html
 
-- レスポンス web デザイン使用時のメタタグ
+- レスポンスwebデザイン使用時のメタタグ
   - `<meta name="viewport" content="width=device-width">`
   - 大きな表示をデバイスに合わせるおまじない
 
 ### Fluid Grid / Image
 
 - 画面サイズに応じてフォント、画像などの要素を変化させる技術
-- 相対値の%や em で指定する
-  - 1em が基準値の 1 倍
-  - font-size のデフォルトは 16px なので、その時の 1.5em は 24px になる
-  - line-height は文字数を基準にするのでよく使われる
+- 相対値の%やemで指定する
+  - 1emが基準値の1倍
+  - font-sizeのデフォルトは16pxなので、その時の1.5emは24pxになる
+  - line-heightは文字数を基準にするのでよく使われる
   - `width: 100%;`として横を画面いっぱいにするのがよく使われる
 - 最初から相対値指定は難しい。最初は絶対値で画面ができてから相対値に直すのが良い。
 - 背景画像として設定する場合
@@ -476,6 +481,6 @@ figure {
 }
 ```
 
-### emmet 省略記法
+### emmet省略記法
 
-- div.item{item0}\*6 +Tab →`<div class="item">item0</div>`が 6 こ
+- div.item{item0}\*6 +Tab →`<div class="item">item0</div>`が6こ

@@ -2,11 +2,11 @@
 
 ## 概要
 
-HTML ページを操作するもの
+HTMLページを操作するもの
 
-### DOM ツリー
+### DOMツリー
 
-HTML ドキュメントをツリー構造として表現したもの
+HTMLドキュメントをツリー構造として表現したもの
 
 - Document
   - `<html>`
@@ -21,7 +21,7 @@ HTML ドキュメントをツリー構造として表現したもの
 ### ノード
 
 文書を構成する要素、属性、テキストといったオブジェクトをノードと呼ぶ。
-DOM ツリーの一つ一つがノード
+DOMツリーの一つ一つがノード
 
 - 要素ノード
 - 属性ノード
@@ -31,29 +31,29 @@ DOM ツリーの一つ一つがノード
 
 - window: ブラウザ操作の機能を集めたオブジェクト
   - screen:　ディスプレイに関する情報を提供
-  - document: HTML コンテンツを保持しているオブジェクト。操作するのは DOM
-    - forms: form に関する情報、操作を提供。
+  - document: HTMLコンテンツを保持しているオブジェクト。操作するのはDOM
+    - forms: formに関する情報、操作を提供。
       - elements:タグのこと
-    - anchors:a タグに関する情報を扱う
+    - anchors:aタグに関する情報を扱う
     - images:画像の情報提供と操作
-  - location:　表示されているページの URL を提供できる
+  - location:　表示されているページのURLを提供できる
   - navigator:　ブラウザ名、バージョンなど、ブラウザ固有の情報を提供する
   - history:　ブラウザ履歴の操作。ページ移動などの操作をしてくれる。
 
-## DOM の操作
+## DOMの操作
 
 ### 取得
 
 - document.getElementById(id)
-  - id がなければ null が変える
-  - innerText メソッドを使用すると(例えば p タグ内の)テキストのみが取得できる
+  - idがなければnullが変える
+  - innerTextメソッドを使用すると(例えばpタグ内の)テキストのみが取得できる
 - document.getElementsByTagName(tagName)
-  - 戻り値は HTMLCollection(配列)
-  - 存在しない場合はから null ではなく空配列
+  - 戻り値はHTMLCollection(配列)
+  - 存在しない場合はからnullではなく空配列
 - document.getElementsByName(name)
 - document.getElementsByClassName(name)
   - 同上
-- input text の文字列取得
+- input textの文字列取得
   `const text = document.getElementById("textBox").value;`
 
 ### 作成
@@ -85,8 +85,8 @@ list.appendChild(listElement);
 
 #### 置換
 
-- node の置き換え
-  - appendChild と removeChile を同時に行う
+- nodeの置き換え
+  - appendChildとremoveChileを同時に行う
 
 ```js
 // 新規要素作成
@@ -105,7 +105,7 @@ const parentNode = oldList.parentNode;
 parentNode.replaceChild(newList, oldList);
 ```
 
-- node 削除
+- node削除
   - oldChild = element.removeChild(child)
 
 ```js
@@ -125,7 +125,7 @@ parentElement.removeChild(elements[elements.length - 1]);
 
 #### 関連づけ
 
-- onclick による関連づけ
+- onclickによる関連づけ
 
 ```js
 const e = document.getElementById("button");
@@ -134,7 +134,7 @@ e.onclick = () => {
 };
 ```
 
-- 要素オブジェクト.addEventListener(イベントの種類, () =>{}, false) - false はイベントの伝搬形式で使用可能
+- 要素オブジェクト.addEventListener(イベントの種類, () =>{}, false) - falseはイベントの伝搬形式で使用可能
 
   ```js
   const e = document.getElementById("button");
@@ -147,8 +147,8 @@ e.onclick = () => {
   );
   ```
 
-- load イベントによる関連づけ
-  - load とは
+- loadイベントによる関連づけ
+  - loadとは
     - 関連付けられた要素が読み終わった時に発生するイベント
     - 画像を含む全要素が読み終わった後などに実行する
 
