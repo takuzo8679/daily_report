@@ -21,10 +21,11 @@
     - 例。-u $(id -u):$(id -g)
       - id -u:実行者のuserId
       - id -g:実行者のgroupId
-  -  -p host:containerポート設定
+  - -p host:containerポート設定
     - portのpと一緒だが、publishのp
     - 例
       - docker run -it -p 12345:8888 --rm jupyter/datascience-notebook bash
+  - -P, --expose:コンテナが使用しているportを同一LANに公開する
   - 資源
     - AWSや、共有マシンでは必要になる
     - --cpus 4 # 物理コア数
@@ -59,6 +60,10 @@
 - docker inspect container
   - NanoCpusが割り当てられているCPU数(nano単位)
   - Memoryが割り当てられているmemory(byte)
+- docker save image > output-image.tar # tarに圧縮する
+- docker volume
+  - docker volumeの情報取得
+  - docker volumeとは、dockerのsystem側でコンテナ終了時データの保存、コンテナ間データ共有を可能にする
 
 ## dockerfile
 
@@ -124,11 +129,64 @@
     - コマンドで指定フォルダ内に含まれるファイルも含まれる
 
 ## 設定
-- 
 
+- AWS
+  - sudo gpasswd -a ubuntu docker
+    - 毎回sudoを実行する手間を省略
+    - ubuntuというuserにdockerの権限を付与する
 
 ## 流れ
 
 - docker hubからimageをpull、またはdockerfileを作成してbuild
 - docker runでimageからコンテナを作成して実行
   - run=create+start
+
+## docker-compose
+
+- 用途
+  - コンテナを複数使うとき
+  - docker runのコマンドが長い時
+- コマンド
+  - docker-compose build
+  - docker-compose up
+    - imageがなければbuildも行う
+    - --buildでビルドも行える
+  - docker-compose ps
+  - docker-compose down
+    - stopしてrm
+  - docker-compose exec web bash
+- 文法
+
+```yml
+version: "3"
+# docker volumeの宣言。docker内でデータの保存と共有が可能
+volumes:
+  db-data:
+
+# 右記と同じになるdocker run -v .:/product-register -p 3000:3000 -it image bash
+services:
+  web:
+    # DockerFileからbuildする場合
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - ".:/product-register"
+    environment:
+      - "DATABASE_PASSWORD=postgres"
+    tty: true
+    stdin_open: true
+    # 下記のserviceの後に作成する
+    depends_on:
+      - db
+    # このサービスから他のサービスにアクセス可能になる
+    links:
+      - db
+
+  db:
+    # buildせずにimageを使用する場合
+    image: postgres
+    volumes:
+      # docker volumeを指定
+      - "db-data:/var/lib/postgresql/data"
+```
