@@ -16,6 +16,8 @@
   - -v host:container: マウント
     - container側にフォルダがなければ作成される
     - 例：-v .hostFolder:/shareFolder
+  - --volumes-from container-name
+    - container-nameのvolumeと共有することができる
   - -u userId: groupId: user:group指定
     - containerはデフォルトではrootで実行される。フォルダ共有している場合は権限が問題になることが多い。
     - 例。-u $(id -u):$(id -g)
@@ -26,6 +28,9 @@
     - 例
       - docker run -it -p 12345:8888 --rm jupyter/datascience-notebook bash
   - -P, --expose:コンテナが使用しているportを同一LANに公開する
+  - --network=myapp
+    - 複数コンテナを接続させるためのネットワークの指定
+    - 実行コマンドはcurl nginx:80のように記載
   - 資源
     - AWSや、共有マシンでは必要になる
     - --cpus 4 # 物理コア数
@@ -39,6 +44,7 @@
 - docker commit container-id image(repository)-name:tag-name
   - コンテナからimageを作る
   - tagがなければlatestが入る
+  - 停止したコンテナのデバッグをする際はcommitでイメージ化した後にrunで中に入る（startでは起動時のコマンドが実行されてしまうため）
 - docker images
 - docker tag source target # 新しいimage名をつける
   - docker tag ubuntu:updated takuzo8679/my-first-repo
@@ -46,8 +52,14 @@
   - hostname:port/username/repository:tag
   - デフォルト：registry-1.docker.io/library/xxxxx:latest
 - docker rmi image
-- docker rm container
 - docker stop container
+  - docker stop $(docker ps -q) # 稼働中のコンテナ停止
+    - docker ps -q # 稼働中のコンテナID表示
+- docker rm container
+  - status:stopのみ削除
+  - -fをつければ強制削除
+  - docker rm $(docker ps -aq) # 全コンテナ削除
+    - docker ps -aq # 全コンテナid表示
 - docker system prune
 - docker build directory
   - -t: dockerfile名を指定
@@ -63,7 +75,15 @@
 - docker save image > output-image.tar # tarに圧縮する
 - docker volume
   - docker volumeの情報取得
-  - docker volumeとは、dockerのsystem側でコンテナ終了時データの保存、コンテナ間データ共有を可能にする
+  - docker volumeとは、dockerのsystem側でコンテナ終了時データの保存、コンテナ間データ共有を可能にする（containerのライフサイクルとは独立して管理される）
+  - docker volume create xxxで新規に作成
+- docker network create myapp
+  - myappというネットワークを作成
+- docker diff container-name
+  - コンテナ起動後の変更ファイルを出力
+  - Dockerfile記述時のデバッグに有効
+
+
 
 ## dockerfile
 
@@ -94,6 +114,7 @@
   - 開発時はうまく使って時間短縮する
 - COPY
   - hostのファイルやフォルダをイメージ内に含ませる
+  - COPY . . としてhostのファイルをすべてコンテナ内に含ませることが良く行われる
 - ADD
   - tarの圧縮ファイルをコピーして持ってきたい場合に使う
     - 自動で解凍しておく
@@ -120,6 +141,17 @@
   - 記載以降は指定したdirectoryで作業がされる
   - directoryがなければmkdirされる
   - bashで入った場合もそこで実行される
+- EXPOSE
+  - 明確化目的でコンテナ起動時に公開することが分かっているportを記述する
+  - 公開にはrunオプションで-Pが必要
+  - 公開サーバーにデプロイする際に使用する
+- ARGS
+  - ビルド時の変数として使用する
+  - 複雑になるので使用しない方が良いらしい
+    ```docker
+    ARGS ${node_env:-production}
+    ENV node_env
+    ```
 
 ## 用語
 
@@ -135,7 +167,7 @@
     - 毎回sudoを実行する手間を省略
     - ubuntuというuserにdockerの権限を付与する
 
-## 流れ
+## 作成から起動までの流れ
 
 - docker hubからimageをpull、またはdockerfileを作成してbuild
 - docker runでimageからコンテナを作成して実行
@@ -155,6 +187,9 @@
   - docker-compose down
     - stopしてrm
   - docker-compose exec web bash
+- networks
+  - フロントとバックでリポジトリが分かれる際に有効
+  - internal(private), external(public)を定義してRDBの公開を避けられる
 - 文法
 
 ```yml
@@ -169,11 +204,15 @@ services:
     # DockerFileからbuildする場合
     build: .
     ports:
-      - "3000:3000"
+      - 3000:3000
     volumes:
-      - ".:/product-register"
+      - .:/product-register
     environment:
-      - "DATABASE_PASSWORD=postgres"
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_PASSWORD2=$(READ_FROM_ENV_BY_SHELL)
+    # ファイルから読み込み
+    env_file:
+      - .env
     tty: true
     stdin_open: true
     # 下記のserviceの後に作成する
@@ -188,5 +227,27 @@ services:
     image: postgres
     volumes:
       # docker volumeを指定
-      - "db-data:/var/lib/postgresql/data"
+      - db-data:/var/lib/postgresql/data
 ```
+
+## 設計方針
+- ベースイメージは最軽量のalpineの利用を検討する
+- 1コンテナに1プロセス（一つの関心ごと）
+- 複数プロセスを接続する場合はソケットではなくネットワークで行う
+  - ツール：docker-compose, Kubernetes, ECS
+- 冪等性が求められる
+  - volume使用時は要注意
+- Webアプリの12の設計方針
+  - https://12factor.net/ja/
+- セキュリティ
+  - rootユーザーは使わない
+    - USERコマンドを使用する
+  - Dockerイメージは公式を使用する
+  - ホストファイルのマウントは最小範囲、最小権限で行う
+  - .dokcerignoreで不要なパスがイメージに含まれるのを防ぐ
+    - 軽量化にもつながる
+- ログはdata volumeに記載する
+  - dockerはコンテナlayerに書き込みファイルがない場合、イメージlayerを一つずつ探すので書き込みが遅くなる
+  - コンテナ停止後に取得可能
+- 軽量かつプロダクションを意識したイメージ例
+  - https://y-ohgi.com/introduction-docker/3_production/dockerfile/#_5
