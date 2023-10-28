@@ -31,6 +31,7 @@
   - --network=myapp
     - 複数コンテナを接続させるためのネットワークの指定
     - 実行コマンドはcurl nginx:80のように記載
+  - -w: 作業ディレクトリ
   - 資源
     - AWSや、共有マシンでは必要になる
     - --cpus 4 # 物理コア数
@@ -82,8 +83,6 @@
 - docker diff container-name
   - コンテナ起動後の変更ファイルを出力
   - Dockerfile記述時のデバッグに有効
-
-
 
 ## dockerfile
 
@@ -198,6 +197,8 @@ version: "3"
 volumes:
   db-data:
 
+# networkは書かなくても自動で構成してくれる
+
 # 右記と同じになるdocker run -v .:/product-register -p 3000:3000 -it image bash
 services:
   web:
@@ -205,6 +206,8 @@ services:
     build: .
     ports:
       - 3000:3000
+    # -w の作業ディレクトリ
+    working_dir: /app
     volumes:
       - .:/product-register
     environment:
@@ -231,6 +234,7 @@ services:
 ```
 
 ## 設計方針
+
 - ベースイメージは最軽量のalpineの利用を検討する
 - 1コンテナに1プロセス（一つの関心ごと）
 - 複数プロセスを接続する場合はソケットではなくネットワークで行う
@@ -251,3 +255,19 @@ services:
   - コンテナ停止後に取得可能
 - 軽量かつプロダクションを意識したイメージ例
   - https://y-ohgi.com/introduction-docker/3_production/dockerfile/#_5
+- Dockerfileのビルド時の依存関係
+  - ソースファイル更新時に毎回依存関係の更新が発生しないようにする
+  - まず依存関係をinstallしてからCOPY . . を行う
+    - COPY . .　で変更のあったファイルだけを更新するため
+    - Dockerは更新があった手前のレイヤーまではキャッシュを使用するため
+  - .dockerignoreにnode_modulesを記載しておく
+  - nodeのサンプルコードは下記。Gemfileでも同様
+    ```dockerfile
+    COPY package.json package_lock.json ./
+    RUN npm install
+    COPY . .
+    ```
+
+## マルチステージ ビルド
+- 構築時の依存関係と実行時の依存関係を分離する
+  - 例えば本番環境のコンテナにはbuild用のツールは不要
