@@ -211,8 +211,8 @@ services:
     volumes:
       - .:/product-register
     environment:
-      - DATABASE_PASSWORD=postgres
-      - DATABASE_PASSWORD2=$(READ_FROM_ENV_BY_SHELL)
+      - DATABASE_PASSWORD=postgres # POSTGRES_PASSWORDと同じにすること
+      - DATABASE_PASSWORD2=$(READ_FROM_ENV_BY_SHELL) #${}ではなく$()
     # ファイルから読み込み
     env_file:
       - .env
@@ -231,6 +231,10 @@ services:
     volumes:
       # docker volumeを指定
       - db-data:/var/lib/postgresql/data
+    # これを設定しないと動かない
+    environment:
+      - "POSTGRES_USER=postgres"
+      - "POSTGRES_PASSWORD=postgres"
 ```
 
 ## 設計方針
@@ -268,6 +272,15 @@ services:
     COPY . .
     ```
 
+## databaseのユーザーとIDについて
+
+- postgreの唯一の初期ユーザーとパスワードはどちらもpostgres
+- Dockerを起動する過程で他のユーザーが自動で作られるわけではない
+- 使用するuserはpostgresを指定する必要がある
+- パスワードは変更可能だが、DATABASE_PASSWORDとPOSTGRES_PASSWORDを一致させる必要がある
+- パスワード変更時はdocker volumeの削除が必要
+
 ## マルチステージ ビルド
+
 - 構築時の依存関係と実行時の依存関係を分離する
   - 例えば本番環境のコンテナにはbuild用のツールは不要
