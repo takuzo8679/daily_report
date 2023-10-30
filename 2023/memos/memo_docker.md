@@ -86,6 +86,10 @@
 
 ## dockerfile
 
+既存のイメージにレイヤーを積み重ねるための情報をテキスト化
+
+### 文法
+
 - FROM
   - 原則最初に記載
   - baseとなるimage
@@ -212,7 +216,7 @@ services:
       - .:/product-register
     environment:
       - DATABASE_PASSWORD=postgres # POSTGRES_PASSWORDと同じにすること
-      - DATABASE_PASSWORD2=$(READ_FROM_ENV_BY_SHELL) #${}ではなく$()
+      - DATABASE_PASSWORD2=${READ_FROM_ENV_BY_SHELL} #$()ではなく${}
     # ファイルから読み込み
     env_file:
       - .env
@@ -284,3 +288,10 @@ services:
 
 - 構築時の依存関係と実行時の依存関係を分離する
   - 例えば本番環境のコンテナにはbuild用のツールは不要
+
+## 基礎知識
+- imageはファイルやメタ情報を集めたもの
+  - ベース、インストール情報、環境変数、設定ファイル
+- コンテナ内にOSは入っていない
+  - Namespaceという機能で隔離されている
+- 
