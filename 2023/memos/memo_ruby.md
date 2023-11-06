@@ -68,6 +68,15 @@ for val in ary do puts val end
     - `date.isSunday?`ではなく`date.sunday?`
 	- !をつけると元の変数を上書きする(ex.revers!)
   - キーワード引数を指定できる
+  - デフォルト引数がある`func(arg1=1,arg2=2)`
+  - デフォルト引数に他の関数を指定するとその関数の戻り値となる
+  - ?で終わるメソッドはtrue/falseで返る
+    - isXXXの代わりに使うのが主流
+  - !で終わるメソッド
+    - !がつかないメソッドより危険という意味
+    - 非破壊/破壊的メソッドの二つが用意されている場合は後者に!がつく
+    - 破壊的メソッドでも非破壊的メソッドがない場合は!がつかない(ex.concat)
+    - 破壊/非破壊に限らず安全/危険の2種類のメソッドが存在する場合にも!で区別される
 - コーディングルール
   - 公式はない
   - The Ruby Style guideが有名
@@ -118,6 +127,26 @@ for val in ary do puts val end
   - ファイルの読み込み`require "./menu"`
 - ライブラリ
   - date
+
+## Minitest
+
+```ruby
+require 'minitest/autorun'
+class SampleTest < Minitest::Test # 継承する
+  def test_sample # Minitestはtest_で始まるメソッドを探す
+    # 第一引数が期待値、第二引数がテスト値
+    assert_equal 'RUBY', 'ruby'.upcase
+    # assert a # trueを期待
+    # refute a # falseを期待
+  end
+end
+```
+
+- その他のテストにRspecがある
+
+## ライブラリ
+- 標準ライブラリ読み込み：`require ライブラリ名`
+- 自作ライブラリ読み込み：`require_relative path/ライブラリ名` .rbは不要　
 
 ## モジュール
 
