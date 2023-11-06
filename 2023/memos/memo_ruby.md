@@ -9,11 +9,26 @@
     - gets.chomp
     - gets.chomp.to_iで整数変換
 - 変数
+  - 変数名は慣習として小文字のスネークケース
+  - 多重代入可能：a,b = 1,2
+  - false, nil以外はTrue:(0もtrue)
   - 定数
     - 大文字で始める。でも代入できてしまう。
 - 整数
   - odd?, even?
   - to_s
+- if文
+  - if文は最後に評価された式を戻り値として返す
+  - 後置if:`a *= 5 if hoge==fuga`
+- メソッド
+  - メソッド名は小文字のスネークケースが慣例
+  - 最後に評価された式が戻り値になる
+  - returnを書かないのが主流
+    - 途中で脱出する場合に使われる
+      - `return 'invalid value' if value.nil?`
+  - 引数がない場合は()をつけないのが主流
+    - def greet
+    - end
 - 配列
   - 作成：[*0..10]、（[0..10].to_a
   - shuffle, revers
