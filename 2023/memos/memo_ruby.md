@@ -34,6 +34,18 @@
   - 二文字ずつ配列化
     - str.scan(/\w\w/)
     - str.scan(/.{1,2}/)
+  - scan:正規表現にマッチする部分を配列に入れて返す
+  - [], slice:マッチした部分を抜き出す
+  - 置換のgsub
+    - 基本`'aa-bb'.gsub('-','=') # 'aa=bb'`
+    - 第二引数にハッシュを渡す
+      - `'aa-bb'.gsub(/a|b/,{'a'=>'c', 'b'=>'d'}) # 'cc-dd'`
+    - 第二引数の代わりにブロックを渡す
+      - `'aa-bb'.gsub(/a|b/){|m| m == 'a'? 'c':'d'} # 'cc-dd'`
+    - 第二引数に\1\2を渡す(''で括るので注意)
+      - `'My birthday is 1986/07/09, summer'.gsub(/(\d+)\/(\d+)\/(\d+)/,'\1-\2-\3')`
+    - 第二引数ではなくブロックと$を渡す
+      - `'My birthday is 1986/07/09, summer'.gsub(/(\d+)\/(\d+)\/(\d+)/) do "#{$1}-#{$2}-#{$3}" end`
 - if文
   - if文は最後に評価された式を戻り値として返す
   - 後置if:`a *= 5 if hoge==fuga`
@@ -129,16 +141,25 @@ ary.map.with_index{|s,i| "#{i} #{s}"}
   - シンボル：コードの一部となる。記法 →ruby
   - ハッシュでは同じように使用できるがシンボル記法が標準
 - 正規表現
+  - 作成
+    - //は/をエスケープする必要がある
+      - /https:\/\/example.com/
+    - %r{}はエスケープ不要
+      - %r{https://example.com}
   - 存在有無確認 
     - '123-4567' =~ /\d{3}-\d{4}/ # true
     - '123-4567' =~ /\d{3}-\d{1}/ # true
   - match
-```ruby
-text='私の誕生日は1977年7月17日です。'
-m=/(\d+)年(\d+)月(\d+)日/.match(text)
-# m=text.match(/(\d+)年(\d+)月(\d+)日/)でも同じ。matchはstringにも定義されているため
-# m[0]#=>"1977年7月17日" m[1]#=>"1977" m[2]#=>"7" m[3]#=>"17"
-```
+    - キャプチャ
+      - /(\d+)年(\d+)月(\d+)日/としたときの()で括った箇所をキャプチャと呼ぶ
+    - サンプルコード
+      ```ruby
+      text='私の誕生日は1977年7月17日です。'
+      m=/(\d+)年(\d+)月(\d+)日/.match(text)
+      # m=text.match(/(\d+)年(\d+)月(\d+)日/)でも同じ。matchはstringにも定義されているため
+      # m[0]#=>"1977年7月17日" m[1]#=>"1977" m[2]#=>"7" m[3]#=>"17"
+      ```
+    - =~ やmatchを使用しただけで$の組み込み変数に値が代入されている
 - メソッド
   - 戻り値がbooleanの場合は?をつける慣例
     - `date.isSunday?`ではなく`date.sunday?`
@@ -167,6 +188,18 @@ m=/(\d+)年(\d+)月(\d+)日/.match(text)
 
 ## クラス
 
+- Rubyでは全てのものがオブジェクトになる
+- クラス宣言時に継承を記述しない場合はオブジェクトクラスが継承される
+- 用語
+  - クラスから生成されたもの：オブジェクトとインスタンスで同じ意味
+  - レシーバ：メソッドを呼び出された側
+  - 状態・ステート：オブジェクトが保持しているデータ
+  - 属性・アトリビュート・プロパティ：get/setできるデータ
+  - is-a
+    - 継承が適切かの判断に使用できる。声に出して違和感がないこと
+    - サブクラスはスーパークラスの一種である
+    - rice is a food.
+- クラス名は大文字で書き始める
 - サンプルコード
   ```ruby
     class User
@@ -176,8 +209,11 @@ m=/(\d+)年(\d+)月(\d+)日/.match(text)
       def initialize(name)
         @name =name
       end
-      def hello
+      def hello # インスタンスメソッド。user.helloで呼び出す
         puts "hello I am #{@name}!"
+      end
+      def self.bye # クラスメソッド。User.bye、User::byeで呼び出す
+        puts "bye"
       end
     end
   user = User.new('takuzo')
@@ -189,7 +225,10 @@ m=/(\d+)年(\d+)月(\d+)日/.match(text)
 - アクセサ
   - インスタンス変数の定義例`attr_accessor :amount`
 - 継承記載例`class Food < Menu`
-- オーバーライド：そのまま`def hoge`
+- オーバーライド
+  - そのまま`def hoge`
+  - メソッド内でsuperをcallすると親クラスのメソッドを呼べる
+- 遅延初期化、メモ化：`||=`を使用すると重い処理でも初回のみ代入できるようになr
 - 変数＠
   - @value :インスタンス変数：インスタンスに一つ持ち、外からアクセス可能
     - メソッド間で共有可能
@@ -199,10 +238,15 @@ m=/(\d+)年(\d+)月(\d+)日/.match(text)
   - 定義例。`def self.discountDay?`
   - インスタンスを生成せずに呼べる
   - 対：インスタンスメソッド
+  - privateにする場合
+    - class << self endでくくる
 - アクセス権限
   - publicデフォルト
   - protected
-  - private記載して改行してインテントした箇所が適用される
+  - private
+    - 記載して改行してインテントした箇所が適用される
+    - クラスメソッドはprivateにならない
+    - 親クラスがprivateでもpublicでオーバーライドされる。親クラスがコールするとエラーになる
 - ファイル構造
   - プログラム実行部分：index.rb、その他のクラス：menu.rb
   - ファイルの読み込み`require "./menu"`
@@ -214,6 +258,9 @@ m=/(\d+)年(\d+)月(\d+)日/.match(text)
 ```ruby
 require 'minitest/autorun'
 class SampleTest < Minitest::Test # 継承する
+  def setup
+    # テスト前に必ず行う処理
+  end
   def test_sample # Minitestはtest_で始まるメソッドを探す
     # 第一引数が期待値、第二引数がテスト値
     assert_equal 'RUBY', 'ruby'.upcase
