@@ -1,0 +1,67 @@
+@charset "UTF-8";
+.container {
+  text-align: center;
+  margin: 0 auto;
+  max-width: 600px;
+
+  /* header */
+
+
+  .circle {
+    border-radius: 50%;
+  }
+
+  .skills {
+    padding: 20px 0;
+    background-color: #f1f1f1;
+  }
+  .langs {
+    & ul {
+      display: flex;
+      justify-content: space-around;
+      list-style: none;
+    }
+    & li {
+    }
+  }
+  .lang {
+    width: 100px;
+    height: 100px;
+    /* line-height: 100px; */
+    /* 中央揃えにする */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    /* border: solid 1px #ccc; */
+    margin: 20px;
+  }
+  .html5 {
+    background-color: #e44d26;
+  }
+  .css3 {
+    background-color: #00e;
+  }
+  .javascript {
+    background-color: rgb(196, 196, 9);
+  }
+
+  .work {
+    max-width: 400px;
+    margin: 0 auto 30px auto;
+
+    text-align: left;
+    & h3 {
+      margin-bottom: -10px;
+    }
+    & img {
+      width: 100%;
+    }
+  }
+  & footer {
+    height: 50px;
+    line-height: 50px;
+    background-color: #000;
+    color: #fff;
+  }
+}

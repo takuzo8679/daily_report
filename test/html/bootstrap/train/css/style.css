@@ -1,0 +1,10 @@
+.bg-img{
+    background-image: url("https://learnwithnakamura.s3.ap-northeast-1.amazonaws.com/bootstrap5/bOy4OPu98lI.jpg");
+    background-size: cover;
+    background-position: center 30%;
+    /* padding: 30px 0px; */
+}
+
+body{
+    font-family: "Hiragino Kaku Gothic ProN";
+}

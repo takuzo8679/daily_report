@@ -1,0 +1,134 @@
+@charset "UTF-8";
+
+/* スマホサイズ */
+
+html {
+  font-size: 100%;
+}
+body {
+  /* font-family: hiragino; */
+  color: #555;
+}
+img {
+  width: 100%;
+}
+
+.wrapper {
+  max-width: 940px;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+
+.container {
+  /* 共通部分 */
+
+  & h2 {
+    color: #8c6239;
+    border-bottom: 1px solid #8c6239;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+  }
+
+  /* header部分 */
+  & header {
+    border-top: 10px solid #8c6239;
+    padding: 10px;
+    & img {
+      width: 90px;
+    }
+    & ul {
+      float: right;
+      list-style: none;
+      display: flex;
+      & li {
+        margin: 20px;
+        & a {
+          color: #555;
+          text-decoration: none;
+        }
+        & a:hover,
+        a:active,
+        .current {
+          color: #8c6239;
+        }
+      }
+    }
+  }
+  /* TOP画像 */
+  .top-image {
+    width: 100%;
+    height: 50vh;
+    /* 比率固定 */
+    object-fit: cover;
+  }
+
+  /* main */
+  & main {
+    font-size: 1em;
+    line-height: 1.5em;
+    margin-bottom: 30px;
+
+    /* お知らせ */
+    & article {
+      margin-bottom: 40px;
+      & table {
+        border-collapse: separate;
+        border-spacing: 20px 5px;
+      }
+    }
+    /* キャンペーン情報 */
+    & img {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+  }
+
+  /* footer */
+  & footer {
+    background-color: #8c6239;
+    color: #fff;
+    text-align: center;
+    font-size: 0.8em;
+    padding: 20px;
+    & ul {
+      margin: 0 auto;
+      margin-bottom: 20px;
+      width: 600px;
+      list-style: none;
+      /* display: flex; */
+      /* justify-content: space-around; */
+
+      & li{
+        display: inline-block;
+        margin: 5px;
+      
+        
+        & a {
+          color: #fff;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+}
+/* タブレットサイズ */
+@media screen and (min-width: 600px) {
+  & header {
+    display: block;
+    margin: 0 auto;
+  }
+  & main {
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 20px;
+  }
+  .campaign {
+    grid-column: 1;
+  }
+  .banners {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}
