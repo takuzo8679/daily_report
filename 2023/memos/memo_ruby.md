@@ -563,7 +563,12 @@ puts car2
 
 ## ツール
 - Brakeman:セキュリティチェック
-- RuboCop: コーディング作法
+- RuboCop: コーディング作法チェックツール
+  - `gem install rubocop`
+  - `rubocop`：フォルダ配下の.rbを解析
+  - `rubocop filename.rb`： 指定ファイル名のみ解析
+  - `rubocop -a`：自動修正(弱め)
+  - `rubocop -A`：自動修正(強め)
 - Rake
   - 元はビルドツール。Rubyで作られている。MakeのRuby版
   - 今はタスクを実行できるツール
