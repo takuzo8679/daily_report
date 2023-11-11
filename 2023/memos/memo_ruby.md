@@ -1,5 +1,11 @@
 # rubyメモ
 
+## 参考
+
+- プロを目指す人のためのRuby入門
+
+## 基本概要
+
 - 標準I/O
   - 出力
     - puts :改行ありで戻り値nil
@@ -462,22 +468,139 @@ greet {|s| s * 2}
 
 # パターンマッチ
 
-- フォーマットが異なるデータ群の一致を行いやすくする仕組み
+- 概要
+  - フォーマットが微妙に異なるデータ群のデータ抽出や整形を行いやすくする仕組み
+  - 変数に直接代入も可能
+- 利用パターン
+  - value: 値を直接記載する
+  - variable: 変数で比較する。objと書くと全てにmatchする
+  - array: 配列に対するパターン
+    - 完全一致に適合
+  - hash: hashに対するパターン
+    - 部分一致に適合＝inで指定したキーが存在すれば他のキーの有無は判定に含まれない
+      - 上から順に評価される
+  - as: in {name:String => name, age:18.. => age}のように書いて変数に代入する
+  - alternative: in 1|2|3 のように記載し、どれか一つに当てはまればmatch
+    - variableとの組み合わせは不可
+  - find:
+    - case [1,1,1,11,12,13,2,2,2]
+    - in [*, 10..=>a, 10..=>b, 10..=>c, *]
+    - 前後の*は任意として10以上の整数が連続する部分を抜き出して代入する
+    - Ruby3.2から正式対応
+- inの一番外側の[]と{}は省略可能
+- 注意点
+  - スコープがないので
+    - 同名の変数があれば上書きされる
+    - パターンマッチを抜けてもアクセス可能
+- One-line pattern match(1行パターンマッチ)もある
+  - Ruby3.1から正式対応
+```ruby
+# caseを省略した一行のif文
+person = {name: 'Alice', children: ['Bob']}
+if person in {name:, children: [_]}
+  # match
+end
+```
+```ruby
+# selectで条件に合うハッシュのみ取得
+persons = [
+  {name: 'Alice', age: 11, gender: 'female'},
+  {name: 'Bob',   age: 12, gender: 'male'},
+  {name: 'Carol', age: 13, gender: 'female'},
+]
+persons.select { |p| p in {gender: 'female'} } => females # 右代入 
+puts females
+```
+
+- 応用した変数代入（）右代入とも呼ばれる
+  - `式 => パターン`
+  - `123 => n`
+  - メソッドチェーンの結果を代入することに用いられる
 
 ```ruby
+# 配列
 require 'date'
-records = [
-  [2021],
-  [2022,5],
-  [2023,11,22],
-]
-recodes.map do |record|
-  case recode
-  in [y]
-    Date.new(y,1,1)
-  in [y,m]
-    Date.new(y,m,1)
-  in [y,m,d]
-    Date.new(y,m,d)
-  end
+dates = 
+  # records
+  [
+    [2021],
+    [2022,5],
+    [2023,11,22],
+  ]
+  .map do |record|
+    case record
+    # 要素のマッチ
+    in [y]
+      Date.new(y,1,1)
+    in [y,m]
+      Date.new(y,m,1)
+    in [y,m,d]
+      Date.new(y,m,d)
+    end
+end
+puts dates
 ```
+```ruby
+cars=[
+  {name:'TheBeatle',engine:'105ps'},
+  {name:'Prius',engine:'98ps',motor:'72ps'},
+  {name:'Tesla',motor:'306ps'}
+]
+car2 = cars.each do |car|
+  case car
+  # シンボルで指定
+  in {name:,engine:,motor:}
+    # シンボルと同名のlocal変数に代入される
+    puts "Hybrid:#{name}/engine:#{engine}/motor:#{motor}"
+  in {name:,engine:}
+    puts "Gasoline:#{name}/engine:#{engine}"
+  in {name:,motor:}
+    puts "EV:#{name}/motor:#{motor}"
+  end
+end
+puts car2
+```
+
+## ツール
+- Brakeman:セキュリティチェック
+- RuboCop: コーディング作法
+- Rake
+  - 元はビルドツール。Rubyで作られている。MakeのRuby版
+  - 今はタスクを実行できるツール
+  - テストコードの一括実行など
+    - Rakefileを記載して`rake`を実行する
+    ```ruby
+    require 'rake/testtask'
+    Rake::TestTask.new do |t|
+      t.pattern='test/**/*_test.rb'
+    end
+    task default: :test
+    ```
+- Bundler
+  - gemの管理
+    - 同一バージョンをコマンド一つでインストール
+    - 流れ
+      - bundle init
+        - Gemfile、Gemfile.lockが作成される
+          - Gemfile.lock: Bundlerで管理すべきgemとそのversionが記載される
+      - Gemfileに使いたいgemを記載:`gem faker, '3.2.2`
+      - bundle install
+      - bundle exec ruby sample.rb
+    - bundle exec rubyで実行した場合はgemに記載されたversionで実行される
+      - 単純にrubyで実行した場合はそのその環境にインストールされている最新のものが実行される
+
+## 型情報の定義と型検査
+- 下記を使用して.rbはそのままで外部から型づけを実現している
+  - RBS
+    - Rubyの型情報を扱う言語
+    - .rbとは別の.rbsファイルに型情報のみ記述される
+  - TypeProf
+    - .rbを解析して.rbsを生成するツール
+  - Steep
+    - 型検査器
+
+## Railsと素のRubyの違い
+- requireをrailsでは書く機会が減る。フレームワークが行ってくれるため。
+- ディレクトリ構造から名前空間を判別してmoduleが自動生成される
+- 標準ライブラリやMinitestが拡張されている
+  - 'HelloWorld'.underscore #=> "hello_world"
