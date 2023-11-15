@@ -7,10 +7,8 @@
     - desc users; -- description
   - 削除
     - drop table users;
-- 日付データのフォーマット：`"2017-01-08"`
-  - ダブルクォーテーションでくくる
-  - ハイフンで繋ぐ
-  - 0を足して２桁
+- コマンドの実行順
+  - FROM, WHERE, GROUP BY, HAVING, SELECT, ORDER BY
 - 正規表現：`like "%文字列%"`
   - ダブルクォーテーションでくくる
   - %がワイルドカード
@@ -19,6 +17,7 @@
   - x where column = NULL
   - o where column is NULL
 - `select DISTINCT(name)`でnameカラムの重複を削除
+- `FROM test_table as A`とするとtest_tableをAで呼べる
 - 計算
   - 単純計算：`select price, price * 1.10`で計算が可能
   - 合計:`select sum(price)`
@@ -66,11 +65,15 @@
     - 順番：JOIN->SELECT
     - キーがNULLの場合は結合元のレコードごと表示されない
   - LEFT JOIN
-    - キーがNULLの場合でも結合元のレコードが表示される
+    - キーがNULLの場合でも結合元のレコードが表示され、結合先はNULLになる
+  - RIGHT JOIN
+    - キーがNULLの場合は結合元のレコードにNULL行が追加され結合先の値が入る
+  - OUTER JOIN
+    - どちらかのテーブルに値があれば結合する
   - 複数回実行可能
 - レコード追加
   - `INSERT INTO students (name, course) VALUES("Kate", "Java");`
-  - VALUESはVALUEの単数ではなくVALUESの複数形
+    - VALUESはVALUEの単数ではなくVALUESの複数形
   - `create table users (id int unsigned auto_increment not null primary key, name varchar(32), ageint not null);`
 - レコード更新
   - `UPDATE students SET name='Jordan', course='HTML' WHERE id = 6;`
@@ -104,3 +107,7 @@
 - date: YYYY-MM-DD
 - datetime: YYYY-MM-DD hh:mm:ss.nnnnnn
 - time: -838:59:59から838:59:59まで
+- 日付データのフォーマット：`"2017-01-08"`
+  - ダブルクォーテーションでくくる
+  - ハイフンで繋ぐ
+  - 0を足して２桁
