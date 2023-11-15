@@ -92,7 +92,7 @@
   - shuffle, revers
   - sample(n, random):引数の要素数をランダムに取得した配列を返す
   - push, <<, shift
-  - unique, join,
+  - uniq, join,
   - delete(一致する要素を削除)、delete_if
   - 要素取得:a[-1],a[-2,2],a.last,a.last(2),a.first(2)
   - [1,2,3,4,5][1,3]=100
