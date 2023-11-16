@@ -9,10 +9,19 @@
     - drop table users;
 - コマンドの実行順
   - FROM, WHERE, GROUP BY, HAVING, SELECT, ORDER BY
-- 正規表現：`like "%文字列%"`
+- ワイルドカード
+  - `WHERE カラム like "%文?_字_列%" ESCAPE "?"`
   - ダブルクォーテーションでくくる
-  - %がワイルドカード
+    - -: 任意の一文字
+    - %: 任意の0文字以上
+    - エスケープ処理
+      - ESCAPE "?" // ?に限らず任意の文字で良い
+- 正規表現
+  - `WHERE カラム ~ '^[ab]?[^ab]+(a|b).{3,4}?$'`
+  - `WHERE id ~ '^a.*(03|52)$`
+  - 
 - 否定：`where not name like "%プリン%";` // プリンを含まない
+- `WHERE AAA BETWEEN "BBB" AND "CCC"`
 - NULLは=ではなくisを使用する
   - x where column = NULL
   - o where column is NULL
@@ -74,6 +83,7 @@
 - レコード追加
   - `INSERT INTO students (name, course) VALUES("Kate", "Java");`
     - VALUESはVALUEの単数ではなくVALUESの複数形
+    - VALUESの前のカラム指定は省略可能
   - `create table users (id int unsigned auto_increment not null primary key, name varchar(32), ageint not null);`
 - レコード更新
   - `UPDATE students SET name='Jordan', course='HTML' WHERE id = 6;`
@@ -111,3 +121,38 @@
   - ダブルクォーテーションでくくる
   - ハイフンで繋ぐ
   - 0を足して２桁
+
+### 組み込み関数
+
+- LENGTH：文字列の長さを返す
+  - `WHERE LENGTH(商品名) >= 5` 5文字以上の商品名
+  - `SELECT 商品名, LENGTH 文字数` select句にも使える
+- SUBSTRING：文字列から一部の文を切り出す
+  - SUBSTRING, 文字位置、文字数
+    - 文字位置に負の値も指定可能
+  - `WHERE SUBSTRING("ID", 3, 2) BETWEEN '00` and '20'
+    - IDの三文字目から2文字を抜き出し、その値が00~20のもの
+- ROUND(数値, 桁数):四捨五入
+  - ROUND(12.345,0) //12
+  - ROUND(12.345)   //12 第二引数は省略可能で0になる
+  - ROUND(12.345,1) //12.3
+  - ROUND(12.345,2) //12.35
+- CASE
+```sql
+-- 単純CASE式
+SELECT *
+  CASE カラム
+    WHEN  値1 THEN 結果1️
+    WHEN  値2 THEN 結果2
+    ELSE 結果3
+  END 表示するカラム名
+FROM table_a
+-- 検索CASE式
+SELECT *
+  CASE  -- カラム名を書かない
+    WHEN  条件1 THEN 結果1️
+    WHEN  id = 'aaa' THEN 結果2
+    ELSE 結果3
+  END 表示するカラム名
+FROM table_a
+```
