@@ -27,6 +27,7 @@
   - o where column is NULL
 - `select DISTINCT(name)`でnameカラムの重複を削除
 - `FROM test_table as A`とするとtest_tableをAで呼べる
+  - asは省略されることもある
 - 計算
   - 単純計算：`select price, price * 1.10`で計算が可能
   - 合計:`select sum(price)`
@@ -83,7 +84,7 @@
 - レコード追加
   - `INSERT INTO students (name, course) VALUES("Kate", "Java");`
     - VALUESはVALUEの単数ではなくVALUESの複数形
-    - VALUESの前のカラム指定は省略可能
+    - 全データを指定する場合はVALUESの前のカラム指定は省略可能
   - `create table users (id int unsigned auto_increment not null primary key, name varchar(32), ageint not null);`
 - レコード更新
   - `UPDATE students SET name='Jordan', course='HTML' WHERE id = 6;`
@@ -127,16 +128,26 @@
 - LENGTH：文字列の長さを返す
   - `WHERE LENGTH(商品名) >= 5` 5文字以上の商品名
   - `SELECT 商品名, LENGTH 文字数` select句にも使える
+- TRIM:文字列の前後の空白を削除する
+- REPLACE(検索対象, 置換対象文字, 置換後の文字)で置換する
+- CONCAT(文字列1, 文字列2, ...)
 - SUBSTRING：文字列から一部の文を切り出す
   - SUBSTRING, 文字位置、文字数
     - 文字位置に負の値も指定可能
   - `WHERE SUBSTRING("ID", 3, 2) BETWEEN '00` and '20'
-    - IDの三文字目から2文字を抜き出し、その値が00~20のもの
+    - IDの2文字目から2文字を抜き出し、その値が00~20のもの
 - ROUND(数値, 桁数):四捨五入
+  - ROUND(12.345,-1) //10
   - ROUND(12.345,0) //12
   - ROUND(12.345)   //12 第二引数は省略可能で0になる
   - ROUND(12.345,1) //12.3
   - ROUND(12.345,2) //12.35
+- TRUNC:指定桁で切り捨て
+- POWER：冪乗
+- CURRENT_TIMESTAMP, CURRENT_DATE, CURRENT_TIME
+- `CAST(変換値 AS 変換後する型)`
+- COALESCE：最初にnullでない値を返す
+  - `SELECT COALESCE(nullがあるカラム, '置換後の文字列') AS foo`で見やすくする
 - CASE
 ```sql
 -- 単純CASE式
@@ -156,3 +167,23 @@ SELECT *
   END 表示するカラム名
 FROM table_a
 ```
+
+### キー
+
+- 主キー(primary):唯一
+- 複合主キー(composite):単体では主キーになり得ない列を組み合わせて主キーになる（氏名,住所,生年月日）
+- 候補キー(candidate):主キーになり得るもの
+- 代替キー(alternative):候補キーの中で主キーとして選ばれなかった方
+- 代替キー(surrogate):
+
+
+### 集合演算子
+
+- データ型の一致が必要
+- UNION：和集合：二つの検索結果を足し合わせる
+  - 一つのテーブルでも可能
+  - 組み合わせで3つ以上も可能
+- EXCEPT(MINUS)：最初の検索から次の検索で重複したものを除く
+- INTERSECT：2つの検索で重複するもの
+
+
