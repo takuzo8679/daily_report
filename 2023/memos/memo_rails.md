@@ -287,7 +287,6 @@
   - 検証
     - emailなどで@userを取得後に
     - `if @user && @user.authenticate(params[:password])`
-- ``:
 
 ## その他
 

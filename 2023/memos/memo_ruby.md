@@ -265,6 +265,7 @@ ary.map.with_index{|s,i| "#{i} #{s}"}
   - 定義例。`def self.discountDay?`
   - インスタンスを生成せずに呼べる
   - 対：インスタンスメソッド
+  - インスタンスからは呼び出せない
 - アクセス権限
   - publicデフォルト
   - private
@@ -287,6 +288,12 @@ ary.map.with_index{|s,i| "#{i} #{s}"}
   - ファイルの読み込み`require "./menu"`
 - ライブラリ
   - date
+    - `Datetime`”日付と時刻:
+    - 実行時の環境で時刻を取れる
+    - .zoneで確認できる
+    - railsではもっと便利なライブラリがある
+  - 
+
 
 ## Minitest
 
