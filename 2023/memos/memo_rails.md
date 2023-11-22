@@ -180,6 +180,7 @@
     - 別のrouteに飛ばす
     - `redirect_to("パス")`
     - `redirect_to("/posts/index")`
+    - `redirect_to controller_name_path # URIヘルパーを使用`
     - /をつける。ファイルではなくパスなので。
   - ビュー表示
     - 別のアクションを介さずにxx.html.erbを表示する
@@ -207,16 +208,16 @@
   - URLにidを含める:`get "posts/:id" => "posts#show"`とすると　 1でも2でもshowへ行く
     - `:id`はpost内の末尾に書く
   - `resources :tasks`と記載すると関連するCRUDを自動生成してれる
-  - | Prefix    | Verb   | URI Pattern     | Controller#Action |
-    | --------- | ------ | --------------- | ----------------- |
-    | tasks     | GET    | /tasks          | tasks#index       |
-    |           | POST   | /tasks          | tasks#create      |
-    | new_task  | GET    | /tasks/new      | tasks#new         |
-    | edit_task | GET    | /tasks/:id/edit | tasks#edit        |
-    | task      | GET    | /tasks/:id      | tasks#show        |
-    |           | PATCH  | /tasks/:id      | tasks#update      |
-    |           | PUT    | /tasks/:id      | tasks#update      |
-    |           | DELETE | /tasks/:id      | tasks#destroy     |
+  - | Prefix    | Verb   | URI Pattern     | Controller#Action |補足           |
+    | --------- | ------ | --------------- | ----------------- |---------------|
+    | tasks     | GET    | /tasks          | tasks#index       |一覧の取得       |
+    |           | POST   | /tasks          | tasks#create      |新規追加         |
+    | new_task  | GET    | /tasks/new      | tasks#new         |追加用の画面取得   |
+    | edit_task | GET    | /tasks/:id/edit | tasks#edit        |編集用の画面取得   |
+    | task      | GET    | /tasks/:id      | tasks#show        |詳細の取得        |
+    |           | PATCH  | /tasks/:id      | tasks#update      |編集実行          |
+    |           | PUT    | /tasks/:id      | tasks#update      |PATCHと違いはない  |
+    |           | DELETE | /tasks/:id      | tasks#destroy     |削除              |
 
 ## レイアウト
 
@@ -288,6 +289,36 @@
     - emailなどで@userを取得後に
     - `if @user && @user.authenticate(params[:password])`
 
+## Bootstrap
+
+- 使用の流れ
+  - gemに追加
+    - bootstrap:本体
+    - sassc-rails: sass
+    - mini_racer: jsを使用するためのgem
+  - (bundle install(docker build)が必要)
+  - 予め用意されている`app/assets/stylesheet/application.css`の拡張子を`.sass`に変更
+    - 記載されているrequireを削除して`@import bootstarp`を追加
+  - ここまででbootstrapのstyleが適用されるようになる
+  - bootstrap関連のjsの読み込み設定
+  - import_map
+    - javascriptのライブラリの名前と実際のファイル名を関連づけるもの
+      - Bootstrapのテンプレート上のコードでjsが実行される時にgemに含まれるjsを見にいくようにする
+    - コマンド実行：`rails importmap:install`
+      - 初期ファイルが自動で作成される
+        - config/importmap.rb
+          - `pin "bootstrap", to: "bootstrap.min.js", preload: true`
+            - `import bootstrap`と記載すると`bootstrap.min.js`が読み込まれるようになる
+              - bootstrap.min.jsはbootstrapのgemに含まれている
+            - `preload: true`: jsが実行されるよりも前に読み込むことで実行時遅延を回避する
+        - config/initializers/assets.rb
+          - `Rails.application.config.assets.precompile += %w(bootstrap.min.js popper.js)`
+          - アセットパイプラインの指定
+            - ブラウザ読み込みのためにプリコンパイルで圧縮される
+        - app/javascript/application.js
+          - ここに読み込み時のコードを記載
+            - bootstrapは画面読み込み時に動作を指定しないと動かない（`window.onload`）
+
 ## その他
 
 - ストロングパラメータ
@@ -308,3 +339,23 @@
 - turbo
   - Rails7から導入された非同期通信の仕組み
   - JavaScriptが不要になる
+- パーシャルによるビューの再利用
+  - _from.html.erbのように先頭にアンダースコアをつける
+  - erbから読み込む
+    - `<%= render partial: 'form', locals: { board: @board } %>`
+  - 名称が同じ場合の省略形
+    ```ruby
+    <%= render partial: 'board', locals: { board: @board } %>
+    <!-- 変数名が同じ場合はobjectに省略できる -->
+    <%= render partial: 'board', object: @board %>
+    <!-- ファイル名も全て同じ場合は更に省略できる -->
+    <%= render @board %>
+    ```
+- タイムゾーン設定
+  - config/application.rbに`config.time_zone = Tokyo`を追加
+- `link_to 'delete', hoge, method: :delete`でGETが呼ばれてしまう
+  - Rails7からTurboLinkの仕様が変わったことが原因
+  - 対応：button_toに変えると
+  - 補足
+    - link_toではGETを使用するaタグが生成される
+    - button_toではvalue="delete"のinputを要素に持つのformタグ(method="post")が生成される
