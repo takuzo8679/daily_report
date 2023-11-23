@@ -26,6 +26,8 @@
   - homeというコントローラーが作成されるので一度しか使えない
   - ページを追加する際は　 controller.rbとroutes.rbにアクションを追加する
   - viewが不要な場合は手動作成可能
+  - 必要なものを選択することが可能
+    - `rails g controller comments create destroy --skip-template-engine`
 
 ### Database
 
@@ -190,6 +192,7 @@
   - フラッシュ
     - 投稿成功時など1度だけ表示させたいメッセージ
     - \_\_.controllerにてflash変数に代入`flash[:notice] = "hoge"`
+      - または`redirect_to boards_path, flash: {notice: "hoge"}`
     - \_\_.html.erbにてflash変数がある場合に表示
     - ```erb
       <%if flash[:notice]%>
@@ -353,9 +356,60 @@
     ```
 - タイムゾーン設定
   - config/application.rbに`config.time_zone = Tokyo`を追加
+- 言語設定
+  - config/application.rbに`config.i18n.default_locale = :ja`を追加
+  - config/localesにja.ymlを追加して下記のように記載
+    ```yml
+    ja:
+      views:
+        pagination:
+          first: "最初"
+          last: "最後"
+    ```
 - `link_to 'delete', hoge, method: :delete`でGETが呼ばれてしまう
   - Rails7からTurboLinkの仕様が変わったことが原因
   - 対応：button_toに変えると
   - 補足
     - link_toではGETを使用するaタグが生成される
     - button_toではvalue="delete"のinputを要素に持つのformタグ(method="post")が生成される
+- 初期データの投入
+  - db/seeds.rbにコードを記載する
+    ```ruby
+    if Rails.env == 'development'
+      (1..50).each do |i|
+        Board.create(name: "ユーザー#{i}", title: "タイトル#{i}", body: "本文#{i}")
+      end
+    end
+    ```
+  - コマンド実行
+    - `docker-compose exec web bundle exec rake db:seed`
+- ページネーション
+  - kaminariをGemfileに追加する
+  - 設定用のコマンドを実行する
+    - `docker-compose exec web bundle exec rails g kaminari:config`
+      - 作成される：`config/initializers/kaminari_config.rb`
+  - kaminari用のビューファイルの作成
+    - `docker-compose exec web bundle exec rails g kaminari:views bootstrap4`
+      - `app/views/kaminari/`配下にパーシャル用のビューが作成される
+  - 取得時の実装(index)
+    - controller
+      - 上記の設定をしたことにりApplicationControllerにpageメソッドが追加されている
+        - 前：`@boards = Board.all`
+        - 後：`@boards = Board.page(params[:page])`
+    - view
+      - 末尾にpaginateを追加するだけ
+      - `<%= paginate @boards %>`
+- アノテーション
+  - データベースのテーブル情報をモデルのファイルに書き足してくれる
+    - Gemfileに追加:annotate
+    - `docker-compose exec web bundle exec annotate`
+      - 上手くいかない場合は下記を実行
+        - `docker-compose exec web rails g annotate:install`
+          - 作成された lib/tasks/auto_annotate_models.rake ファイルを開く。
+          - `show_indexes`をtrueからfalseにかえる
+      - migrationでテーブルが作成される際にアノテーションの自動追加
+        - `docker-compose exec web rails g annotate:install`
+- アソシエーション
+  - テーブルのキーの関連付け
+    - モデル生成時に`column_name:references`と入力するとBoardモデルと紐づけるためのboard_idカラムが作成される
+    - `bundle exec rails g model comment board:references name:string comment:text`
