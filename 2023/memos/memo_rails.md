@@ -416,5 +416,26 @@
         - `docker-compose exec web rails g annotate:install`
 - アソシエーション
   - テーブルのキーの関連付け
+    - モデル作成時のコマンドにオプション追加で行う
+      - `bundle exec rails g model comment board:references name:string comment:text`
     - モデル生成時に`column_name:references`と入力するとBoardモデルと紐づけるためのboard_idカラムが作成される
-    - `bundle exec rails g model comment board:references name:string comment:text`
+    - 一の方
+      - モデルファイルに`belongs_to: :table_name`が付加されている
+      - 単数系になる
+    - 多の方
+      - モデルファイルに`has_many: :table_name(s)`を自分で付加する
+      - 複数形になる
+    - 多対多
+      - 中間テーブルに対してthrough:を付加する
+        - `has_many :table1(s), through: :table2(s)`
+          - table2を介してtable1に多をもつ
+  - dependent
+    - 依存をするキーを自動で消す設定
+      - 例えば掲示板とタグが多対多の場合にあるタグが消されたら掲示板テーブルの全レコードでそのタグを消す必要がある。データが浮いてしまうため。掲示板が消された時も同様。
+    - Railsではdependentオプションで自動で行ってくれる
+      - destroyメソッドが呼ばれた時のみ有効でdeleteでは効かない点に注意
+      - `has_many :tag, dependent: :delete_all`
+        - delete_allの他にdestroyもある
+          - 頻度は低く通常はdelete_allを使用する
+          - オブジェクト一つ一つに対してdestroyを実行する
+          - 関連の関連を消すときなどに使用
