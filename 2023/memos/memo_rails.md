@@ -280,7 +280,7 @@
   - Likeテーブルを作成する
     - user_id, post_id
   - いいねアイコンはFont Awesomeから取得
-- パスワードハッシュ化
+- パスワードハッシュ化、ユーザー認証
   - `bcrypt`をインストール
   - `password_digest`カラムを追加し、`password`カラムは削除
   - `has_secure_password`をモデルファイルの上部に記載
@@ -321,6 +321,22 @@
         - app/javascript/application.js
           - ここに読み込み時のコードを記載
             - bootstrapは画面読み込み時に動作を指定しないと動かない（`window.onload`）
+
+## テスト/Rspec
+
+- 導入(rspecの公式を参照)
+  - Gemfile
+    - gem 'rspec-rails', '~> 6.1.0'
+    - （追記したらbundle install
+  - 設定ファイルのインストール
+    - rails g rspec:install
+- テストファイルの追加
+  - gコマンドを使う場合
+    - `rails g rspec:model User`
+    - `rails g rspec:controller Users`
+  - 使わなくても良い
+- テストの実行
+  - `rspec ./spec/models`
 
 ## その他
 
@@ -429,6 +445,12 @@
       - 中間テーブルに対してthrough:を付加する
         - `has_many :table1(s), through: :table2(s)`
           - table2を介してtable1に多をもつ
+    - タグ検索の場合
+      - `@boards = params[:tag_id].present? ? Tag.find(params[:tag_id]).boards : Board.all`
+        - tag_idがあればそれでTagテーブルから指定のboardsを取得してなければ全件取得
+          - 全件取得だが、実際には@boardsが参照されるタイミングで全件取得になる
+            - `@boards = @boards.page(params[:page])`
+            - のようにしておけばpageの件数しかアクセスされない
   - dependent
     - 依存をするキーを自動で消す設定
       - 例えば掲示板とタグが多対多の場合にあるタグが消されたら掲示板テーブルの全レコードでそのタグを消す必要がある。データが浮いてしまうため。掲示板が消された時も同様。
@@ -439,3 +461,4 @@
           - 頻度は低く通常はdelete_allを使用する
           - オブジェクト一つ一つに対してdestroyを実行する
           - 関連の関連を消すときなどに使用
+
