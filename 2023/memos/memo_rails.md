@@ -334,9 +334,52 @@
   - gコマンドを使う場合
     - `rails g rspec:model User`
     - `rails g rspec:controller Users`
+      - 'request'フォルダ配下にコードが生成される
   - 使わなくても良い
 - テストの実行
-  - `rspec ./spec/models`
+  - `rspec [-f d] ./spec/models` # -f dオプションで出力を整形
+- テストの書き方
+  - controllerはrequestという形式に変わっている
+- サンプル
+```ruby
+# テストコード
+require 'rails_helper'
+# 他のimportはいらない。フォルダ構成から読み取られる
+
+#テストする対象
+RSpec.describe User, type: :model do
+  describe '#age' do
+  # jestのbeforeEach
+  before do
+    # mock化：Time.zone.now(今)にアクセス時のreturn値を設定
+    allow(Time.zone).to receive(:now).and_return(Time.zone.parse('2018/04/01'))
+  end
+    # テストケース。context内は共通のコンテキストになる
+    context '20年前の生年月日の場合' do
+      # テストの前提を設定。userモデルのnew時の値を設定
+      let(:user) { User.new(birthday: Time.zone.now - 20.years)}
+      # テストの実施
+      it '年齢が20歳であること' do
+        expect(user.age).to eq 20
+      end
+    end
+    # テストケースその2
+    context '10年前に生まれた場合でちょうど誕生日の場合' do
+      let(:user) { User.new(birthday: Time.zone.parse('2008/04/01')) }
+      it '年齢が10歳であること' do
+        expect(user.age).to eq 10
+      end
+    end
+  end
+end
+# 実行結果
+# User
+#   #age
+#     20年前の生年月日の場合
+#       年齢が20歳であること
+#     10年前に生まれた場合でちょうど誕生日の場合
+#       年齢が10歳であること
+```
 
 ## その他
 
