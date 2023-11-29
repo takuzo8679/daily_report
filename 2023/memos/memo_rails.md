@@ -51,9 +51,15 @@
     - `add_column :テーブル名, ;カラム名, :データ型`
     ```ruby
     def change
-        add_column :users, :image_name, :string
+        add_column :users, :image_name, :string, null: false, limit: 30, unique:true
     end
     ```
+  - save,update,createの違い
+    - save:オブジェクトを現状通りに登録・更新する
+    - update:変更内容を引数で指定して更新する
+    - create:オブジェクトを生成してからsaveする
+  - unique:trueでもnullは異なる値となる
+  - 細かい指定はmodelのvalidateを使う
 - 実行:`rails db:migrate`
   - DB未反映のマイグレーションファイルがあるとRailsがエラーになるので注意
 - DB管理画面
@@ -247,6 +253,9 @@
   - :の位置に注意する
   - 文字数制限: `validates : content, {length: {maximum: 140}}`
   - 重複禁止：`{uniqueness: true}`
+  - ヘルパーにないものは作成する
+    - メソッドを追加
+    - 自前のvalidatorを追加
 
 ## ライブラリ
 
@@ -340,6 +349,8 @@
   - `rspec [-f d] ./spec/models` # -f dオプションで出力を整形
 - テストの書き方
   - controllerはrequestという形式に変わっている
+  - letは下の行に書くこともでき、その場合は上の行を上書きする
+  - shared_example：重複するitを再利用する
 - サンプル
 ```ruby
 # テストコード
@@ -381,6 +392,12 @@ end
 #       年齢が10歳であること
 ```
 
+- Capybara
+  - E2Eテスト（Systemテスト）用フレームワーク
+  - railsに同梱されている
+- FactoryBot
+  - テスト用データの作成gem
+
 ## その他
 
 - 省略記法
@@ -420,6 +437,9 @@ end
     ```
 - タイムゾーン設定
   - config/application.rbに`config.time_zone = Tokyo`を追加
+    - スレッドセーフになっているのでリクエスト毎に変えても他のリクエストに影響がない
+  - config/application.rbに`config.active_record.default_timezone = :local`
+    - と設定するとサーバーがある場所でDBに保存される（デフォルトは:utc)
 - 言語設定
   - config/application.rbに`config.i18n.default_locale = :ja`を追加
   - config/localesにja.ymlを追加して下記のように記載
@@ -504,4 +524,9 @@ end
           - 頻度は低く通常はdelete_allを使用する
           - オブジェクト一つ一つに対してdestroyを実行する
           - 関連の関連を消すときなどに使用
-
+- ログ
+  - サンプル
+    - `logger.debug 'error message'`
+- 本番環境
+  - アセットのプリコンパイルが発生する
+  - master.keyの取扱に注意
