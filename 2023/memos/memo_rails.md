@@ -300,6 +300,19 @@
   - 検証
     - emailなどで@userを取得後に
     - `if @user && @user.authenticate(params[:password])`
+- 検索とソート
+  - ransackというgemで検索とソートが行える
+- Action Mailer
+  - Rails標準のメイラー機能
+  - 動作確認にはmailcatcherというgemが使える
+    - `mailcatcher`というコマンドでsmtpサーバーがたつ
+  - RSpecでもテスト可能
+- Active Storage
+  - Rails標準gem
+  - S3へファイルをアップロードしてDB上でActiveRecordモデルに紐づけられる
+  - 画像のサイズやフォーマット変換、プレビュー機能も提供
+- Active Job
+  - 非同期処理や定期実行
 
 ## Bootstrap
 
@@ -397,6 +410,20 @@ end
   - railsに同梱されている
 - FactoryBot
   - テスト用データの作成gem
+
+## JavaScriptとの関係
+
+- 2パターン
+  - 基本はRailsを使用してJSで補う。画面遷移のない動作など
+    - マウスオーバーなどの変化をつける
+    - Ajaxを用いた非同期処理(rails-ujsが活躍)
+  - 基本はJSを使用してRailsはサーバサイドのみを提供
+    - webpackerを用いたReact
+- Turbolinks
+  - すべてのページ遷移を自動的にAjax化することで高速化する仕組み
+    - プレビュー機能
+      - 前回のキャッシュを一旦表示してAjax受信後に更新する
+  - 制約なども発生するので無効化も検討する
 
 ## その他
 
