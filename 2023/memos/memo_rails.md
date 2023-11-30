@@ -60,8 +60,28 @@
     - create:オブジェクトを生成してからsaveする
   - unique:trueでもnullは異なる値となる
   - 細かい指定はmodelのvalidateを使う
-- 実行:`rails db:migrate`
-  - DB未反映のマイグレーションファイルがあるとRailsがエラーになるので注意
+- マイグレーション
+  - 実行:`rails db:migrate`
+    - DB未反映のマイグレーションファイルがあるとRailsがエラーになるので注意
+    - 動作確認:`rails db:migrate:redo`:今の状態を一旦下げてから元に戻す
+  - ロールバック:`rails db:rollback`
+    - 実行前に戻す
+    - コードによっては戻せない場合もありその時はエラーになる
+  - アプリケーションコードでマイグレーションを書かない
+    - `User.all.find_each { |user| user.update(admin: false) }`とするとUserクラスの実装に依存してマイグレーション実行タイミングではクラスが変更されて動かない場合がある
+      - `each`:取得した件数の分だけインスタンスを生成するので大量のメモリが取得される
+      - `find_each`:1000件ずつ分割して実行される
+    - `class Table < ActiveRecord::Base; end`のようにしてTableクラスからupdateを実行できる。これでアプリコードと分離できる
+  - マイグレーションで例外が発生した場合はrallbackされる
+  - マイグレーションでのメソッドは!を使用する
+    - update  :失敗時にfalseを返す(save, create, destroyも同様)
+    - update! :失敗時にraiseする
+  - ActiveRecordにはキャッシュが存在する
+    - アクセス頻度を下げる仕組み
+    - 連続で更新する場合は最初の状態で取得した状態に更新をかけるので不正な状態になる場合がある
+    - update実行前に`reset_column_information`でキャッシュをリセットする
+    - `Table.reset_column_information`
+  - マイグレーションファイルが多くなったらSquasherというgemで一つに集約が可能
 - DB管理画面
   - 起動:rails db、またはrails dbconsole
   - table一覧：.schema
@@ -411,6 +431,13 @@ end
 - FactoryBot
   - テスト用データの作成gem
 
+## 環境構築
+
+- `bin/setup`:初回
+- `bin/update`:git pull後に環境を最新にするもの
+- seedも運用する
+  - 上記はメンテが漏れやすい
+
 ## JavaScriptとの関係
 
 - 2パターン
@@ -492,6 +519,14 @@ end
       end
     end
     ```
+  - 重複登録の回避としてデータがなければ登録する`find_or_create_by!`
+  ```ruby
+  User.find_or_create_by!(email: 'admin@example') do |user|
+    user.name = 'admin' 
+    user.password = 'password' 
+    user.password_confirmation= 'password' 
+  end
+  ```
   - コマンド実行
     - `docker-compose exec web bundle exec rake db:seed`
 - ページネーション
