@@ -8,4 +8,4 @@ if [ ! -d $DIR_NAME ]; then
 fi
 
 cp $YESTERDAY $TODAY
-code $TODAY # open file with vscode
+cursor $TODAY # open file with vscode
