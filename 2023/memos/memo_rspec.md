@@ -49,3 +49,45 @@
 
 - bundle exec rspec #実行
 - bundle binstubs rspec-core # 実行用ファイル生成
+
+## テストデータ
+
+- Fixture
+  - Railsに最初からついている
+  - ymlで記述
+  - 別のファイルで管理される
+  - 壊れやすい
+  - ActiveRecordを使用しないので実環境と異なる
+- Factory
+  - コードをシンプルに保てる
+  - 多用しすぎると遅くなる
+    - 予期しないデータまで作成されていないか注意する
+    - 可能な限りcreateよりもbuildを使用する
+  - 記載例
+    ```ruby
+    #spec/factories/note.rb でデータ準備
+    FactoryBot.define do
+      factory :note do
+        message { "My important note." }
+        association :project # project作成時にuserが作成される
+        # association :user # この記載では二重でuserを作成してしまう
+        user { project.owner } # 上記のuserを関連付ける
+      end
+    end
+    ```
+    ```ruby
+    #spec/models/note_spec.rb で作成
+    it 'has a valid factory' do
+      expect(FactoryBot.build(:note)).to be_valid
+    end
+    ```
+  - build：インスタンス化のみでDBに保存しない
+  - create:ActiveRecordを使用してDBに保存する
+  - ユニークな値の生成:`sequence(:email) { |n| "tester#{n}@example.com" }`
+  - associationによる関連付け
+  - class, traitによる重複削除
+  - create_list
+  - コールバック: `after(:create) { |project| create_list(:note, 5, project: project)}`
+
+
+
