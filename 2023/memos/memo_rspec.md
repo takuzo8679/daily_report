@@ -90,4 +90,16 @@
   - コールバック: `after(:create) { |project| create_list(:note, 5, project: project)}`
 
 
+## controller
 
+- 最近は他のテストを使うことを推奨(soft-deprecated)
+- 対象となる機能の単体テストとして最善の場合のみ用いる
+- 筆者はアクセス制御のテストに限定している（非認可とゲスト）
+- 書き方はmodelと概ね同じでマッチャが異なる
+- 使い過ぎると肥大化する傾向にあるので注意する
+
+## system
+- system specは時間がかかるので一つのシナリオで複数のexpectを書くのが良い
+- テストの途中でexpectを書いても良い
+  - ただしそれ専用のシナリオを書く方が良い
+  - 
