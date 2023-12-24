@@ -3,7 +3,8 @@
 ## 方針
 
 - TDDにすべき
--
+- spec/rails_helper.rbはなるべくきれいな状態を保たせる
+  - 理由：関連ごとにまとめる？
 
 ## 実装
 
@@ -31,6 +32,11 @@
 - .rspec
   - --format documentation:見やすくなる
   - --warning:警告表示
+- spec/rails_helper.rb
+  - specのconfigの設定ファイル
+- spec/support/\*.rb
+  - specのconfigの設定ファイル
+  - rails_helperから読み込む
 
 ### database
 
@@ -89,17 +95,35 @@
   - create_list
   - コールバック: `after(:create) { |project| create_list(:note, 5, project: project)}`
 
-
 ## controller
 
 - 最近は他のテストを使うことを推奨(soft-deprecated)
 - 対象となる機能の単体テストとして最善の場合のみ用いる
 - 筆者はアクセス制御のテストに限定している（非認可とゲスト）
+- コントローラのテストなのでUIは無視される
 - 書き方はmodelと概ね同じでマッチャが異なる
 - 使い過ぎると肥大化する傾向にあるので注意する
 
 ## system
+
 - system specは時間がかかるので一つのシナリオで複数のexpectを書くのが良い
+- controller specと異なりUIが考慮される
 - テストの途中でexpectを書いても良い
   - ただしそれ専用のシナリオを書く方が良い
-  - 
+- Capybara
+  - [DSL一覧](https://github.com/teamcapybara/capybara#the-dsl)
+
+### 構文
+
+- driven_by(:rack_test)
+  - headless_driverの使用を宣言
+    - 早くて高信頼だがJSは非サポートなので使用時は外す
+- デバッグ用メソッド：コミットしないように注意する
+  - save_and_open_page：　現在の状況をtmp/capybara/xxx.htmlに保存してブラウザで表示
+  - save_page: 保存のみ
+
+## request
+
+- API関連のテストを行う
+- Capybaraは不要なので使わない
+- get, post, delete, patchでテストする
