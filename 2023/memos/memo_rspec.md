@@ -103,6 +103,7 @@
 - コントローラのテストなのでUIは無視される
 - 書き方はmodelと概ね同じでマッチャが異なる
 - 使い過ぎると肥大化する傾向にあるので注意する
+- APIパスはspecに紐づける必要がある(requestではない)
 
 ## system
 
@@ -127,3 +128,4 @@
 - API関連のテストを行う
 - Capybaraは不要なので使わない
 - get, post, delete, patchでテストする
+- controller specとはことなり任意のpathを呼べる
