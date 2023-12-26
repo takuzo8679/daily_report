@@ -113,6 +113,8 @@
   - ただしそれ専用のシナリオを書く方が良い
 - Capybara
   - [DSL一覧](https://github.com/teamcapybara/capybara#the-dsl)
+- ファイルアップロードテストではファイルの削除を忘れないようにする
+- 外部APIを利用する場合はmockを使う
 
 ### 構文
 
@@ -128,4 +130,70 @@
 - API関連のテストを行う
 - Capybaraは不要なので使わない
 - get, post, delete, patchでテストする
-- controller specとはことなり任意のpathを呼べる
+- ほぼcontroller specからの置き換えが可能
+- controller specとの違い
+  - 任意のpathを呼べる
+  - routeからPOSTを送信する(createなどのアクションに作用するのがcontroller spec）
+
+## dryに保つポイント
+
+- support module
+  - 毎回やる手順をワークフローを切り出す
+  - テスト内容に焦点を当てて準備項目などを対象にする
+    - 例えばログイン状態を作ることはテストの目的ではないのでdeviseを使う方が早い
+- let
+  - 遅延読み込み
+  - let!で即座に作成する
+  - beforeでは変数以外のメソッドなどを実行するとよい
+- shared_context
+  - 共通のセットアップを移動する
+- カスタムマッチャ
+- expectの集約
+  - aggregate_failures:失敗したexpectを集約
+  - エラーなど全ての失敗を集めるわけでない点に注意
+- 可読性を上げる
+  - シングルレベルの抽象化
+    - コードを意味を持たせたメソッドに置き換える
+    - https://thoughtbot.com/blog/acceptance-tests-at-a-single-level-of-abstraction
+
+## write fast test, write test fast
+
+- RSpecの簡潔な構文
+  - subject
+    - testの対象物を宣言する
+  - is_expected
+    - ワンライナー記述用
+    - これとShoulda Matchersの組み合わせでとても簡潔になる
+- エディタのショートカット
+- モックとスタブ
+  - DBへアクセスしない
+  - モック
+    - 本物のフリをするdoubleクラス
+    - `user = double(...)`または`user = instance_double(...)`
+  - スタブ
+    - オブジェクトのメソッドをオーバーライドする
+    - `allow(some_class).to receive(some_method).and_return(something)`
+  - テストが早くなる
+  - コードの難易度は高くなるので無理に使用する必要はない
+  - テストできる箇所も減る
+  - 方針
+    - なるべく検証付きテストダブルを使用する
+      - そのままでは大元の変更に追従できなくなるため
+    - 自分で管理していないコードをモック化しない
+      - 変更に追従できなくなるため
+      - 例外：ネットワーク、外部API
+- タグ
+  - つけたものだけを実行できる
+  - 例：基本
+    - `it "is valid", focus: true do`として
+    - `$bundle exec rspec --tag focus`を実行
+    - `$bundle exec rspec --tag ~focus`とすると指定タグ以外
+  - 任意の名前でよい
+  - describeやcontextタグにもつけられる
+- 使用しないテストはskipでスキップできる
+
+## その他のテスト
+
+- Active Storage
+- job:Active Jobをテストする
+- Mailer
