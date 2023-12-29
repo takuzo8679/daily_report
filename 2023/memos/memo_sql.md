@@ -19,7 +19,6 @@
 - 正規表現
   - `WHERE カラム ~ '^[ab]?[^ab]+(a|b).{3,4}?$'`
   - `WHERE id ~ '^a.*(03|52)$`
-  - 
 - 否定：`where not name like "%プリン%";` // プリンを含まない
 - `WHERE AAA BETWEEN "BBB" AND "CCC"`
 - NULLは=ではなくisを使用する
@@ -39,7 +38,7 @@
     - `select count(*)`（null除く）
 - グループ化
   - `GROUP BY`
-    - selectで使えるのはGROUP BYに指定しているから無名と集計関数だけ
+    - selectで使えるのはGROUP BYに指定しているカラム名と集計関数だけ
     - o: `SELECT SUM(price), purchased_at FROM purchases GROUP BY purchased_at`
     - x: `SELECT price, purchased_at FROM purchases GROUP BY purchased_at`
       - 集計されない
@@ -60,26 +59,44 @@
   - クエリの中に他のクエリを入れることができる
   - ()でくくる。例。：`WHERE goals > (select AVG(goals) from players)`
   - ;は不要
+  - 単一行副問い合わせ：1行1列
+    - whereやset句と共に用いられる
+    - SELECT文中で使用するとカラムになる
+  - 複数行副問い合わせ：n行1列
+    - 用途：IN、ANY、ALL演算子で使用する
+      - ANYかALLでNULLが一つでも入ると比較結果はNULLになってしまう
+        - COALESCEを使用して回避する（where is not nullでも可）
+  - 表形式の副問い合わせ：n行n列
+    - FROM句で利用する
+    - INSERT句で利用する（複数行を挿入できる）
+- 相関副問い合わせ：再帰的にサブクエリをする
+  - 副問い合わせの内部から主問い合わせの票や列を利用する副問い合わせ
+  - 例
+    - `SELECT category, sum FROM budget WHERE EXISTS (SELECT * FROM budget WHERE budget.category = summary.item)`
+    - 他のテーブルにも存在するcategoryを抽出する
+    - DBの処理負荷は大きい
 - AS
   - カラムを別名に定義する。エイリアスとも呼ぶ。
   - `SELECT goals AS "ウィルの得点数" FROM players WHERE name = "ウィル";`
   - asは省略可能
 - 結合
-  - JOIN
-    - ```sql
-        SELECT *
-        FROM players
-        JOIN countries
-        ON players.country_id = countries_id;
-      ```
-    - 順番：JOIN->SELECT
-    - キーがNULLの場合は結合元のレコードごと表示されない
-  - LEFT JOIN
-    - キーがNULLの場合でも結合元のレコードが表示され、結合先はNULLになる
-  - RIGHT JOIN
-    - キーがNULLの場合は結合元のレコードにNULL行が追加され結合先の値が入る
-  - OUTER JOIN
-    - どちらかのテーブルに値があれば結合する
+  - InnerJoin:一致するキーがない場合は結合元のレコードごと表示されない
+    - JOIN
+      - ```sql
+          SELECT p.country_id, p.status
+          FROM players AS p -- エイリアスをつけると便利
+          JOIN countries
+          ON p.country_id = countries_id;
+        ```
+      - 順番：JOIN->SELECT
+  - OuterJoin：一致がなくてもnullを追加して元の行を消さない結合
+    - LEFT JOIN
+      - キーがNULLの場合でも結合元のレコードが表示され、結合先はNULLになる
+    - RIGHT JOIN
+      - キーがNULLの場合は結合元のレコードにNULL行が追加され結合先の値が入る
+    - OUTER JOIN（FULL JOIN）
+      - どちらかのテーブルに値があれば結合する
+      - MySQLとMariaDBでは無いのでUNIONで代用する
   - 複数回実行可能
 - レコード追加
   - `INSERT INTO students (name, course) VALUES("Kate", "Java");`
@@ -94,6 +111,47 @@
   - 注意：WHERE句がないとすべてを削除してしまう
   - FROMのつけ忘れ注意
 - offset 3で取得開始位置を指定できる。
+
+## DB設定
+
+- GRANT (権限付与):`GRANT 権限名 TO ユーザー名`
+- REVOKE (権限剥奪):`REVOKE 権限名 FROM ユーザー名`
+- カラムの初期値
+  - DEFAULT
+  - 自動採番
+    - MySQL:AUTO_INCREMENT
+    - PostgreSQL: GRANTED ALWAYS AS IDENTITY, SERIAL(型)
+- カラムの制約
+  - NOT NULL
+  - CHECK( 条件式 )
+  - UNIQUE
+  - PRIMARY KEY
+    - 複合主キーの場合PRIMARY KEY(カラム1, カラム2)
+  - REFERENCES 参照先テーブル名(参照先カラム名)
+
+## データベースオブジェクト
+
+データの管理や操作のための仕組み
+
+- index
+  - `CREATE INDEX index_name ON table_name(column_name)`
+  - 早くなるケース
+    - WHERE句の完全一致と前方一致（部分一致と後方一致では効かない）
+    - ORDER BYの並び替え
+    - JOINによる結合条件
+  - 主キー内部でインデックスが作られる
+  - PLAN文で高速化を効果を測定できる
+- view
+  - select文に名前をつけたもの
+- Sequence
+  - 連番を作成する仕組み
+    - `CREATE SEQUENCE(シーケンス名)`
+    - `SELECT NEXTVAL(シーケンス名)`
+    - `SELECT CURRVAL(シーケンス名)`
+    - `DROP SEQUENCE(シーケンス名)`
+  - 最近ではUUIDが使われる
+    - Universal unique IDentifier
+    - 世界標準のアルゴリズムで生成される128bitのランダム値
 
 ## データ型
 
@@ -139,7 +197,7 @@
 - ROUND(数値, 桁数):四捨五入
   - ROUND(12.345,-1) //10
   - ROUND(12.345,0) //12
-  - ROUND(12.345)   //12 第二引数は省略可能で0になる
+  - ROUND(12.345) //12 第二引数は省略可能で0になる
   - ROUND(12.345,1) //12.3
   - ROUND(12.345,2) //12.35
 - TRUNC:指定桁で切り捨て
@@ -149,6 +207,7 @@
 - COALESCE：最初にnullでない値を返す
   - `SELECT COALESCE(nullがあるカラム, '置換後の文字列') AS foo`で見やすくする
 - CASE
+
 ```sql
 -- 単純CASE式
 SELECT *
@@ -176,7 +235,6 @@ FROM table_a
 - 代替キー(alternative):候補キーの中で主キーとして選ばれなかった方
 - 代替キー(surrogate):
 
-
 ### 集合演算子
 
 - データ型の一致が必要
@@ -185,5 +243,3 @@ FROM table_a
   - 組み合わせで3つ以上も可能
 - EXCEPT(MINUS)：最初の検索から次の検索で重複したものを除く
 - INTERSECT：2つの検索で重複するもの
-
-
