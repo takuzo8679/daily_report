@@ -4,9 +4,12 @@
   - Ruby On Rails 7
   - Ruby 3.2.1
   - PostgreSQL
-- Herokuへデプロイ
 
-###### bootstrap導入
+##### Herokuへデプロイ
+
+- heroku login
+
+##### bootstrap導入
 
 - 参考：https://github.com/twbs/bootstrap-rubygem/blob/main/README.md
 - gemが必要なので追加する。
@@ -63,9 +66,53 @@ Rails.application.config.assets.precompile += %w[bootstrap.min.js popper.js]
 
 - 以上でerbにbootstapの記述(templateのコピペ)ができる様になる
 
-###### modelの作成
+##### modelの作成
 
 - bundle exec rails g Item
   - migrationファイルを編集する
 - 主キーのid自動で付与される(auto_increment)
-- 
+
+##### Active Storageの設定
+
+ファイル設定
+
+```yml
+# config/storage.yml
+amazon:
+  service: S3
+  access_key_id: <%= ENV[AWS_ACCESS_KEY] %>
+  secret_access_key: <%= ENV[AWS_SECRET_KEY] %>
+  region: <%= ENV[AWS_REGION] %>
+  bucket: <%= ENV[AWS_BUCKET] %>
+```
+
+```ruby
+# config/environments/production.rb
+config.active_storage.service = :amazon # devも必要に応じて
+```
+
+必要に応じてdotenvを追加しておく
+
+```ruby
+# gemfile
+gem 'dotenv-rails'
+```
+
+```sh
+# .env
+AWS_ACCESS_KEY=''
+AWS_SECRET_KEY=''
+AWS_REGION=''
+AWS_BUCKET=''
+```
+
+
+```sh
+# ActiveStorage用テーブルを作成
+bundle exec rails active_storage:install
+bundle exec rails db:migrate
+```
+```ruby
+# item.rb
+has_one_attached :index_image
+```
