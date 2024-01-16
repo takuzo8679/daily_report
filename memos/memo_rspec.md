@@ -169,6 +169,14 @@
   - スタブ
     - オブジェクトのメソッドをオーバーライドする
     - `allow(some_class).to receive(some_method).and_return(something)`
+    - allowの代わりにexpectを用いると検証に使える
+    - each文の中でメソッドが呼ばれることを期待する例
+      - `mock_object = instance_double(SomeClass)`
+      - `allow(some_object).to receive_message_chain('aaa.bbb.ccc.each').and_yield(mock_object)`
+      - `expect(mock_object).to receive(:ddd)`
+        - mockではeachがないと言われることがあるのでその場合はreceiveに含めてand_yieldで返す
+        - receive_message_chainのメソッドに引数を与えることはできない
+        - 引数が含まれる場合はシングルクォーテーションでくくる（シンボルの可変長引数ではエラーになる）
   - テストが早くなる
   - コードの難易度は高くなるので無理に使用する必要はない
   - テストできる箇所も減る
