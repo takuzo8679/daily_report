@@ -80,15 +80,22 @@ Rails.application.config.assets.precompile += %w[bootstrap.min.js popper.js]
 # config/storage.yml
 amazon:
   service: S3
-  access_key_id: <%= ENV[AWS_ACCESS_KEY] %>
-  secret_access_key: <%= ENV[AWS_SECRET_KEY] %>
-  region: <%= ENV[AWS_REGION] %>
-  bucket: <%= ENV[AWS_BUCKET] %>
+  access_key_id: <%= ENV['AWS_ACCESS_KEY'] %>
+  secret_access_key: <%= ENV['AWS_SECRET_KEY'] %>
+  region: <%= ENV['AWS_REGION'] %>
+  bucket: <%= ENV['AWS_BUCKET'] %>
 ```
 
 ```ruby
 # config/environments/production.rb
 config.active_storage.service = :amazon # devも必要に応じて
+```
+
+s3へuploadするためにgemが必要
+
+```ruby
+# gemfile
+gem 'aws-sdk-s3', require: false
 ```
 
 必要に応じてdotenvを追加しておく
@@ -106,13 +113,54 @@ AWS_REGION=''
 AWS_BUCKET=''
 ```
 
+ActiveStorage使用のためのコマンド実行
 
 ```sh
-# ActiveStorage用テーブルを作成
+# ActiveStorage用テーブル作成のmigrateファイルの作成
 bundle exec rails active_storage:install
+# migrate実行
 bundle exec rails db:migrate
 ```
+
+関連付けはモデルで行う
+
 ```ruby
-# item.rb
-has_one_attached :index_image
+# app/models/item.rb
+has_one_attached :image
+```
+
+画面上での画像の表示方法
+
+```html
+app/views/items/index.html.erb <%= image_tag(item.image, class: "card-img-top")
+%>
+```
+
+seedファイルの作成
+
+```ruby
+# db/seeds.rb
+# 適当に8つ同じ画像を登録する場合
+(1..8).each do |i|
+  Item.find_or_create_by!(name: "item#{i}") do |item|
+    item.description = "description#{i}"
+    item.price = i * 11.11
+    # modelsで関連付けしたものにファイルを読み込む
+    item.image.attach(io: File.open(Rails.root.join('db/seeds/images/your-file-name.jpeg')),
+                      filename: 'your-file-name.jpeg')
+  end
+end
+```
+
+画像を準備して上記へ保存しておく。
+
+seedの実行
+
+```sh
+# seed実行
+bundle exec rails db:seed
+# drop -> migrate -> seed
+bundle exec rails db:reset
+# drop -> migrate
+bundle exec rails db:migrate:reset
 ```
