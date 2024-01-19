@@ -7,7 +7,33 @@
 
 ##### Herokuへデプロイ
 
-- heroku login
+```sh
+# デプロイ
+heroku login
+heroku apps:create
+heroku addons:create heroku-postgresql:mini
+# 環境変数設定
+heroku config:set AWS_ACCESS_KEY=""
+heroku config:set AWS_SECRET_KEY=""
+heroku config:set AWS_REGION=""
+heroku config:set AWS_BUCKET=""
+# target_branchをherokuへpushする
+git push heroku feat/item_index:main
+# setup
+heroku run rake db:migrate
+heroku run rails db:seed
+heroku ps:scale web=1
+heroku open
+heroku logs --tail
+
+# 削除
+heroku addons:destroy heroku-postgresql
+heroku apps:destroy
+heroku addons --all
+heroku apps --all
+```
+
+it push heroku feat/item_index
 
 ##### bootstrap導入
 
@@ -164,3 +190,4 @@ bundle exec rails db:reset
 # drop -> migrate
 bundle exec rails db:migrate:reset
 ```
+
