@@ -13,10 +13,11 @@ heroku login
 heroku apps:create
 heroku addons:create heroku-postgresql:mini
 # 環境変数設定
-heroku config:set AWS_ACCESS_KEY=""
-heroku config:set AWS_SECRET_KEY=""
-heroku config:set AWS_REGION=""
-heroku config:set AWS_BUCKET=""
+source .env
+heroku config:set AWS_ACCESS_KEY="$AWS_ACCESS_KEY"
+heroku config:set AWS_SECRET_KEY="$AWS_SECRET_KEY"
+heroku config:set AWS_REGION="$AWS_REGION"
+heroku config:set AWS_BUCKET="$AWS_BUCKET"
 # target_branchをherokuへpushする
 git push heroku feat/item_index:main
 # setup
