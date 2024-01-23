@@ -510,6 +510,7 @@ end
   - 補足
     - link_toではGETを使用するaタグが生成される
     - button_toではvalue="delete"のinputを要素に持つのformタグ(method="post")が生成される
+    - `<%= button_to "Add new Item", new_admin_item_path, method: :get, class: "btn btn-dark"%>`
 - 初期データの投入
   - db/seeds.rbにコードを記載する
     ```ruby

@@ -192,3 +192,25 @@ bundle exec rails db:reset
 bundle exec rails db:migrate:reset
 ```
 
+##### 開発
+
+###### route
+
+- routingについて
+  - namespace:パスとフォルダ構成を変えたいとき
+  - scope:パスのみ変えたいとき
+  - module:フォルダ構成のみ変えたいとき
+
+###### erb
+
+- ボタンの実装例
+  - `<%= button_to "Add new Item", new_admin_item_path, method: :get, class: "btn btn-dark"%>`
+  - bootstrapを使用
+- 他のerbの読み込み
+```js
+// ./_header.html.erb
+// ./_item.html.erb // 中は単数で記述。.eachを書くと.lengthの2乗で表示される
+// ./index.html.erb
+<%= render 'header' %>
+<%= render @items %> // ファイル名と引数が同じ場合の省略形。@items.lengthの分だけ_itemを表示
+```
