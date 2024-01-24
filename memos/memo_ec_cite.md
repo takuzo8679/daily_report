@@ -38,6 +38,12 @@ it push heroku feat/item_index
 
 ##### bootstrap導入
 
+- cssbundling-railsのgemを使用
+  - `rails-new --css-bootstrap`と実行するとcssbundling-railを利用してapp/assets配下にbootstrap利用のためのimportが記述されたものが追加される
+  - bootstrap自体はnode_modulesに格納される
+  - 詳細手順は右記：https://qiita.com/kazutosato/items/1ae1cf0ec380a75d4dc4
+
+以降は補足bootstrapのgemを使用した場合
 - 参考：https://github.com/twbs/bootstrap-rubygem/blob/main/README.md
 - gemが必要なので追加する。
 - 追加後に`bundle install`して再起動するとパイプラインを通じて有効になる。
@@ -192,6 +198,26 @@ bundle exec rails db:reset
 bundle exec rails db:migrate:reset
 ```
 
+formの場合、file_fieldで指定すれば保存される
+
+```html
+<%= form_with model: item, url: admin_items_path do |f| %>
+  <div class="mb-3">
+    <%= f.label :image, class: "form-label" %>
+    <%= f.file_field :image, required: true, accept: 'image/*', onchange: 'previewFileWithId(preview)', class: "form-control" %>
+  </div>
+    <div class="mb-3">
+      <%= f.label :name, class: "form-label" %>
+      <%= f.text_field :name, required: true, class: "form-control" %>
+    </div>
+  <div class="mb-3">
+    <%= f.submit "Add New Item", class: "btn btn-dark"%>
+  </div>
+<% end %>
+```
+
+使用時は`item.image`のように使える
+
 ##### 開発
 
 ###### route
@@ -206,6 +232,14 @@ bundle exec rails db:migrate:reset
 - ボタンの実装例
   - `<%= button_to "Add new Item", new_admin_item_path, method: :get, class: "btn btn-dark"%>`
   - bootstrapを使用
+```html
+<!-- pathには引数を指定する -->
+<%= button_to admin_item_path(item), { method: :delete, data: { turbo_confirm: "Delete this?" }, class: "btn btn-light" } do %>
+<!-- アイコンを指定 -->
+  <i class="bi bi-trash"></i>
+<!-- アイコンなどを指定する場合はdo endでくくる -->
+<% end %>
+```
 - 他のerbの読み込み
 ```js
 // ./_header.html.erb

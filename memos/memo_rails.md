@@ -150,6 +150,36 @@
     - `<body>`タグの`<%= yield %>`に配下のerbが代入される仕組み
     - controllerで定義した変数・共通変数を受け取れる
   - フォームからデータを送信
+    - rails7からは`form_with`を使う
+      ```html
+          <%= form_with model: item, url: admin_items_path do |f| %>
+            <% if item.errors.any? %>
+              <div class="alert alert-danger" role="alert">
+                <ul>
+                  <% item.errors.each do |error| %>
+                    <li><%= error.full_message %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+            <div class="mb-3">
+              <%= f.label :name, class: "form-label" %>
+              <%= f.text_field :name, required: true, class: "form-control" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :price,  class: "form-label" %>
+              <%= f.number_field :price, required: true, step: "0.01", min: 1, max: 1000, required: true, class: "form-control" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :description, class: "form-label" %>
+              <%= f.text_area :description, required: true, class: "form-control"  %>
+            </div>
+            <div class="mb-3">
+              <%= f.submit "Add New Item", class: "btn btn-dark"%>
+            </div>
+          <% end %>
+      ```
+    - 以降はrails5
     - `<%= form_tag("/posts/create") do %>`　でくくる。
       - do,=を忘れずに
       - `<textarea name="content"></textarea>`
