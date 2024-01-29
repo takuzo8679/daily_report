@@ -252,7 +252,7 @@
     - \_\_.html.erbにてflash変数がある場合に表示
     - ```erb
       <%if flash[:notice]%>
-          <div class="flash>
+          <div class="flash">
               <%=flash[:notice]%>
           </div>
       <%end%>
