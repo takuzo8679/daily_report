@@ -18,8 +18,12 @@ heroku config:set AWS_ACCESS_KEY="$AWS_ACCESS_KEY"
 heroku config:set AWS_SECRET_KEY="$AWS_SECRET_KEY"
 heroku config:set AWS_REGION="$AWS_REGION"
 heroku config:set AWS_BUCKET="$AWS_BUCKET"
+heroku config:set BASIC_AUTH_USER="$BASIC_AUTH_USER"
+heroku config:set BASIC_AUTH_PASSWORD="$BASIC_AUTH_PASSWORD"
 # target_branchをherokuへpushする
-git push heroku feat/item_index:main
+## 現在のブランチ名
+CURRENT_BRANCH=$(git branch --contains | cut -d " " -f 2):main
+git push heroku $CURRENT_BRANCH
 # setup
 heroku run rake db:migrate
 heroku run rails db:seed

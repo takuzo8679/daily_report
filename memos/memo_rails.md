@@ -482,6 +482,27 @@ end
       - 前回のキャッシュを一旦表示してAjax受信後に更新する
   - 制約なども発生するので無効化も検討する
 
+## Basic認証
+
+```ruby
+# 必要なコントローラーに記載する
+  before_action :basic_auth
+
+  private
+
+    def basic_auth
+      authenticate_or_request_with_http_basic do |username, password|
+        username == ENV['BASIC_AUTH_USER'] && password == ENV['BASIC_AUTH_PASSWORD']
+      end
+    end
+```
+
+```sh
+# .env
+BASIC_AUTH_USER='your_username'
+BASIC_AUTH_PASSWORD='your_password'
+```
+
 ## その他
 
 - 省略記法
