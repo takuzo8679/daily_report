@@ -74,7 +74,7 @@
     - `class Table < ActiveRecord::Base; end`のようにしてTableクラスからupdateを実行できる。これでアプリコードと分離できる
   - マイグレーションで例外が発生した場合はrallbackされる
   - マイグレーションでのメソッドは!を使用する
-    - update  :失敗時にfalseを返す(save, create, destroyも同様)
+    - update :失敗時にfalseを返す(save, create, destroyも同様)
     - update! :失敗時にraiseする
   - ActiveRecordにはキャッシュが存在する
     - アクセス頻度を下げる仕組み
@@ -152,32 +152,33 @@
   - フォームからデータを送信
     - rails7からは`form_with`を使う
       ```html
-          <%= form_with model: item, url: admin_items_path do |f| %>
-            <% if item.errors.any? %>
-              <div class="alert alert-danger" role="alert">
-                <ul>
-                  <% item.errors.each do |error| %>
-                    <li><%= error.full_message %></li>
-                  <% end %>
-                </ul>
-              </div>
-            <% end %>
-            <div class="mb-3">
-              <%= f.label :name, class: "form-label" %>
-              <%= f.text_field :name, required: true, class: "form-control" %>
-            </div>
-            <div class="mb-3">
-              <%= f.label :price,  class: "form-label" %>
-              <%= f.number_field :price, required: true, step: "0.01", min: 1, max: 1000, required: true, class: "form-control" %>
-            </div>
-            <div class="mb-3">
-              <%= f.label :description, class: "form-label" %>
-              <%= f.text_area :description, required: true, class: "form-control"  %>
-            </div>
-            <div class="mb-3">
-              <%= f.submit "Add New Item", class: "btn btn-dark"%>
-            </div>
+      <%= form_with model: item, url: admin_items_path do |f| %> <% if
+      item.errors.any? %>
+      <div class="alert alert-danger" role="alert">
+        <ul>
+          <% item.errors.each do |error| %>
+          <li><%= error.full_message %></li>
           <% end %>
+        </ul>
+      </div>
+      <% end %>
+      <div class="mb-3">
+        <%= f.label :name, class: "form-label" %> <%= f.text_field :name,
+        required: true, class: "form-control" %>
+      </div>
+      <div class="mb-3">
+        <%= f.label :price, class: "form-label" %> <%= f.number_field :price,
+        required: true, step: "0.01", min: 1, max: 1000, required: true, class:
+        "form-control" %>
+      </div>
+      <div class="mb-3">
+        <%= f.label :description, class: "form-label" %> <%= f.text_area
+        :description, required: true, class: "form-control" %>
+      </div>
+      <div class="mb-3">
+        <%= f.submit "Add New Item", class: "btn btn-dark"%>
+      </div>
+      <% end %>
       ```
     - 以降はrails5
     - `<%= form_tag("/posts/create") do %>`　でくくる。
@@ -267,16 +268,16 @@
   - URLにidを含める:`get "posts/:id" => "posts#show"`とすると　 1でも2でもshowへ行く
     - `:id`はpost内の末尾に書く
   - `resources :tasks`と記載すると関連するCRUDを自動生成してれる
-  - | Prefix    | Verb   | URI Pattern     | Controller#Action |補足           |
-    | --------- | ------ | --------------- | ----------------- |---------------|
-    | tasks     | GET    | /tasks          | tasks#index       |一覧の取得       |
-    |           | POST   | /tasks          | tasks#create      |新規追加         |
-    | new_task  | GET    | /tasks/new      | tasks#new         |追加用の画面取得   |
-    | edit_task | GET    | /tasks/:id/edit | tasks#edit        |編集用の画面取得   |
-    | task      | GET    | /tasks/:id      | tasks#show        |詳細の取得        |
-    |           | PATCH  | /tasks/:id      | tasks#update      |編集実行          |
-    |           | PUT    | /tasks/:id      | tasks#update      |PATCHと違いはない  |
-    |           | DELETE | /tasks/:id      | tasks#destroy     |削除              |
+  - | Prefix    | Verb   | URI Pattern     | Controller#Action | 補足              |
+    | --------- | ------ | --------------- | ----------------- | ----------------- |
+    | tasks     | GET    | /tasks          | tasks#index       | 一覧の取得        |
+    |           | POST   | /tasks          | tasks#create      | 新規追加          |
+    | new_task  | GET    | /tasks/new      | tasks#new         | 追加用の画面取得  |
+    | edit_task | GET    | /tasks/:id/edit | tasks#edit        | 編集用の画面取得  |
+    | task      | GET    | /tasks/:id      | tasks#show        | 詳細の取得        |
+    |           | PATCH  | /tasks/:id      | tasks#update      | 編集実行          |
+    |           | PUT    | /tasks/:id      | tasks#update      | PATCHと違いはない |
+    |           | DELETE | /tasks/:id      | tasks#destroy     | 削除              |
 
 ## レイアウト
 
@@ -415,6 +416,7 @@
   - letは下の行に書くこともでき、その場合は上の行を上書きする
   - shared_example：重複するitを再利用する
 - サンプル
+
 ```ruby
 # テストコード
 require 'rails_helper'
@@ -506,7 +508,8 @@ BASIC_AUTH_PASSWORD='your_password'
 ## その他
 
 - 省略記法
-  - 文字列   %w[abc def ghi]
+
+  - 文字列 %w[abc def ghi]
   - シンボル　%i[abc def ghi]
   - カンマで区切らないこと
 
@@ -529,7 +532,7 @@ BASIC_AUTH_PASSWORD='your_password'
   - Rails7から導入された非同期通信の仕組み
   - JavaScriptが不要になる
 - パーシャルによるビューの再利用
-  - _from.html.erbのように先頭にアンダースコアをつける
+  - \_from.html.erbのように先頭にアンダースコアをつける
   - erbから読み込む
     - `<%= render partial: 'form', locals: { board: @board } %>`
   - 名称が同じ場合の省略形
@@ -562,6 +565,23 @@ BASIC_AUTH_PASSWORD='your_password'
     - link_toではGETを使用するaタグが生成される
     - button_toではvalue="delete"のinputを要素に持つのformタグ(method="post")が生成される
     - `<%= button_to "Add new Item", new_admin_item_path, method: :get, class: "btn btn-dark"%>`
+    - button_toとdoとgetと他のpathの組み合わせ
+      - button_toではformが作られてlink_toではaタグが作られる
+        - getの場合はlink_toでbutton装飾するのが良さそう
+
+```erb
+        # 動かないコード
+        # button_toとdoとgetの場合は現在のページに遷移してしまう
+        <%= button_to carts_path, { method: :get, class: "btn btn-outline-dark", url: carts_path } do %>
+          <i class="bi-cart-fill me-1"></i>
+        <% end %>
+
+        # link_toの場合は遷移できた
+        <%= link_to carts_path, class: "btn btn-outline-dark" do %>
+          <i class="bi-cart-fill me-1"></i>
+        <% end %>
+```
+
 - 初期データの投入
   - db/seeds.rbにコードを記載する
     ```ruby
@@ -574,9 +594,9 @@ BASIC_AUTH_PASSWORD='your_password'
   - 重複登録の回避としてデータがなければ登録する`find_or_create_by!`
   ```ruby
   User.find_or_create_by!(email: 'admin@example') do |user|
-    user.name = 'admin' 
-    user.password = 'password' 
-    user.password_confirmation= 'password' 
+    user.name = 'admin'
+    user.password = 'password'
+    user.password_confirmation= 'password'
   end
   ```
   - コマンド実行
