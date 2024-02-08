@@ -252,3 +252,45 @@ formの場合、file_fieldで指定すれば保存される
 <%= render 'header' %>
 <%= render @items %> // ファイル名と引数が同じ場合の省略形。@items.lengthの分だけ_itemを表示
 ```
+
+###### cart model
+
+- 多対多のモデル
+  - `cart` - `cart_item` - `item`の関係にある
+  - cartモデルの作成
+    - `exec rails g model cart cart_item`
+```ruby
+# db/migrate/xx_create_carts.rb
+  def change
+    create_table :carts do |t|
+      t.timestamps
+    end
+  end
+# app/models/cart.rb
+class Cart < ApplicationRecord
+  # ここは自分で追記する
+  has_many: :cart_items, dependent: :delete_all
+  has_many: :items, through: :cart_items
+end
+```
+  - cart_itemモデルの作成
+    - `bundle exec rails g model cart_item cart:references item:references quantity:integer`
+    - `cart:references`のように関連付けたい`モデル名:references`とするのがポイント
+    - キーに右記が追加される`t.references :モデル名, foreign_key: true`
+
+```ruby
+# db/migrate/xx_create_cart_items.rb
+  def change
+    create_table :cart_items do |t|
+      t.references :cart, null: false, foreign_key: true
+      t.references :item, null: false, foreign_key: true
+      t.integer :quantity, null: false, default: 0
+
+      t.timestamps
+    end
+# app/models/cart_item.rb
+class CartItem < ApplicationRecord
+  belongs_to :cart
+  belongs_to :item
+end
+```

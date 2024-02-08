@@ -566,17 +566,15 @@ BASIC_AUTH_PASSWORD='your_password'
     - button_toではvalue="delete"のinputを要素に持つのformタグ(method="post")が生成される
     - `<%= button_to "Add new Item", new_admin_item_path, method: :get, class: "btn btn-dark"%>`
     - button_toとdoとgetと他のpathの組み合わせ
-      - button_toではformが作られてlink_toではaタグが作られる
-        - getの場合はlink_toでbutton装飾するのが良さそう
+    - bootstrapなどを流用して外側にformタグがある中でbutton_toを使うとうまく動かないので注意
 
 ```erb
-        # 動かないコード
-        # button_toとdoとgetの場合は現在のページに遷移してしまう
-        <%= button_to carts_path, { method: :get, class: "btn btn-outline-dark", url: carts_path } do %>
+        # button_toの場合
+        <%= button_to carts_path, { method: :get, class: "btn btn-outline-dark" } do %>
           <i class="bi-cart-fill me-1"></i>
         <% end %>
 
-        # link_toの場合は遷移できた
+        # link_toの場合
         <%= link_to carts_path, class: "btn btn-outline-dark" do %>
           <i class="bi-cart-fill me-1"></i>
         <% end %>
