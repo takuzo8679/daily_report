@@ -269,8 +269,8 @@ formの場合、file_fieldで指定すれば保存される
 # app/models/cart.rb
 class Cart < ApplicationRecord
   # ここは自分で追記する
-  has_many: :cart_items, dependent: :delete_all
-  has_many: :items, through: :cart_items
+  has_many :cart_items, dependent: :delete_all
+  has_many :items, through: :cart_items
 end
 ```
   - cart_itemモデルの作成
