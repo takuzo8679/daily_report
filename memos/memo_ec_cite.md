@@ -294,3 +294,32 @@ class CartItem < ApplicationRecord
   belongs_to :item
 end
 ```
+
+###### その他
+
+- formの例
+  - bootstrapで要素横並びrow,col
+  - 非表示の要素:hidden, 値はvalue
+  - 初期値はvalue
+  - iconを使う際はbutton_tag type: "submit"
+
+```html
+<%= form_with method: :post, url: carts_path, params: { id: @item.id } do |f| %>
+  <%# 要素を横並びにする際はrowを用いる %>
+  <div class="row">
+    <%# form中の非表示の要素はtype: "hidden"を指定する %>
+    <%= f.number_field :id, value: @item.id, type: "hidden" %>
+    <%# 横並びにする要素はcolを指定 %>
+    <div class="col-2">
+      <%= f.number_field :quantity, value: 1, required: true, step:1, min: 1, max: 100, class: "form-control text-center me-3" %>
+    </div>
+    <div class="col-4">
+      <%# submitボタンにアイコンを使う際はbutton_tag type: "submit"を指定する %>
+      <%= button_tag type: "submit", class: "btn btn-outline-dark flex-shrink-0" do %>
+        <i class="bi-cart-fill me-1"></i>
+        Add to cart
+      <% end %>
+    </div>
+  </div>
+<% end %>
+```
